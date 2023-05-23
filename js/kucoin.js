@@ -557,6 +557,14 @@ module.exports = class kucoin extends Exchange {
         };
     }
 
+    // Override
+    isUsingForcedProxy (params = {}, api = 'public') {
+        if (api === 'private') {
+            return true;
+        }
+        return false;
+    }
+
     async fetchMarkets (params = {}) {
         /**
          * @method
