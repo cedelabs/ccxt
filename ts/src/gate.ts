@@ -815,6 +815,15 @@ export default class gate extends Exchange {
         this.options['sandboxMode'] = enable;
     }
 
+    // Override
+    isUsingForcedProxy (params = {}, api = []) {
+        const authentication = api[0]; // public, private
+        if (authentication === 'private') {
+            return true;
+        }
+        return false;
+    }
+    
     async fetchMarkets (params = {}) {
         /**
          * @method
@@ -3260,7 +3269,7 @@ export default class gate extends Exchange {
             'price': priceString,
             'amount': amountString,
             'cost': undefined,
-            'fee': undefined,
+            'fee': fees.length ? fees[0] : undefined,
             'fees': fees,
         }, market);
     }
