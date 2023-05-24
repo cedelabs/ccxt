@@ -816,7 +816,6 @@ export default class gate extends Exchange {
         this.options['sandboxMode'] = enable;
     }
 
-    // Override
     isUsingForcedProxy (params = {}, api = []) {
         const authentication = api[0]; // public, private
         if (authentication === 'private') {
@@ -824,7 +823,7 @@ export default class gate extends Exchange {
         }
         return false;
     }
-
+    
     async fetchMarkets (params = {}) {
         /**
          * @method
