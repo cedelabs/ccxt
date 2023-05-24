@@ -162,6 +162,7 @@ export default class Exchange {
 
     // prepended to URL, like https://proxy.com/https://exchange.com/api...
     proxy = ''
+    forcedProxy = ''
     origin = '*' // CORS origin
 
     minFundingAddressLength = 1 // used in checkAddress
@@ -616,6 +617,7 @@ export default class Exchange {
         this.headers = {}
         // prepended to URL, like https://proxy.com/https://exchange.com/api...
         this.proxy = ''
+        this.forcedProxy = ''
         this.origin = '*' // CORS origin
         // underlying properties
         this.minFundingAddressLength = 1 // used in checkAddress
@@ -774,8 +776,8 @@ export default class Exchange {
         this.throttler = new Throttler (this.tokenBucket);
     }
 
-    throttle (cost = undefined) {
-        return this.throttler.throttle (cost)
+    throttle (cost = undefined, path = undefined, customExpireInterval = undefined, customPriority = undefined) {
+        return this.throttler.customThrottle (cost, path, customExpireInterval, customPriority);
     }
 
     setSandboxMode (enabled) {
@@ -2772,14 +2774,29 @@ export default class Exchange {
         return indexed ? this.indexBy (results, key) : results;
     }
 
+    isUsingForcedProxy (params = undefined, api = undefined) {
+        return false;
+    }
+
     async fetch2 (path, api: any = 'public', method = 'GET', params = {}, headers: any = undefined, body: any = undefined, config = {}) {
         if (this.enableRateLimit) {
+            let customExpireInterval = undefined;
+            let customPriority = undefined;
+            if ('customExpireInterval' in params) {
+                customExpireInterval = params['customExpireInterval'];
+                params = this.omit (params, 'customExpireInterval');
+            }
+            if ('customPriority' in params) {
+                customPriority = params['customPriority'];
+                params = this.omit (params, 'customPriority');
+            }
             const cost = this.calculateRateLimiterCost (api, method, path, params, config);
-            await this.throttle (cost);
+            await this.throttle (cost, path, customExpireInterval, customPriority);
         }
         this.lastRestRequestTimestamp = this.milliseconds ();
+        const forcedProxy = this.isUsingForcedProxy (params, api) ? this.forcedProxy : '';
         const request = this.sign (path, api, method, params, headers, body);
-        return await this.fetch (request['url'], request['method'], request['headers'], request['body']);
+        return await this.fetch (forcedProxy + request['url'], request['method'], request['headers'], request['body']);
     }
 
     async request (path, api: any = 'public', method = 'GET', params = {}, headers: any = undefined, body: any = undefined, config = {}) {
@@ -3446,7 +3463,7 @@ export default class Exchange {
         if (precision === undefined) {
             return fee;
         } else {
-            return this.decimalToPrecision (fee, ROUND, precision, this.precisionMode, this.paddingMode);
+            return this.decimalToPrecision (fee, TRUNCATE, precision, this.precisionMode, this.paddingMode);
         }
     }
 
