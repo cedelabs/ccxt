@@ -197,7 +197,7 @@ class HuobiCustom extends huobi {
 }
 
 (async () => {
-    // Initialize the custom Binance exchange class
+    // Initialize the custom Huobi exchange class
     const exchange = new HuobiCustom({
         apiKey: '12345678',
         secret: '12345678',

@@ -71,7 +71,7 @@ class GateioCustom extends gateio {
 }
 
 (async () => {
-    // Initialize the custom Binance exchange class
+    // Initialize the custom Gate.io exchange class
     const exchange = new GateioCustom({
         apiKey: '12345678',
         secret: '12345678',

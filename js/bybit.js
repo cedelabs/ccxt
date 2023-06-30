@@ -836,6 +836,14 @@ module.exports = class bybit extends Exchange {
         });
     }
 
+    // Override
+    isUsingForcedProxy (params = {}, api = 'public') {
+        if (api === 'private') {
+            return true;
+        }
+        return false;
+    }
+
     nonce () {
         return this.milliseconds () - this.options['timeDifference'];
     }
