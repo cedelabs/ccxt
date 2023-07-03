@@ -69,6 +69,7 @@ class ImplicitAPI:
     private_subaccounts_post_sub_accounts_user_id_unlock = privateSubAccountsPostSubAccountsUserIdUnlock = Entry('sub_accounts/{user_id}/unlock', ['private', 'subAccounts'], 'POST', {'cost': 1})
     private_subaccounts_put_sub_accounts_user_id_keys_key = privateSubAccountsPutSubAccountsUserIdKeysKey = Entry('sub_accounts/{user_id}/keys/{key}', ['private', 'subAccounts'], 'PUT', {'cost': 1})
     private_subaccounts_delete_sub_accounts_user_id_keys_key = privateSubAccountsDeleteSubAccountsUserIdKeysKey = Entry('sub_accounts/{user_id}/keys/{key}', ['private', 'subAccounts'], 'DELETE', {'cost': 1})
+    private_account_get_detail = privateAccountGetDetail = Entry('detail', ['private', 'account'], 'GET', {'cost': 1})
     private_spot_get_accounts = privateSpotGetAccounts = Entry('accounts', ['private', 'spot'], 'GET', {'cost': 1})
     private_spot_get_account_book = privateSpotGetAccountBook = Entry('account_book', ['private', 'spot'], 'GET', {'cost': 1})
     private_spot_get_open_orders = privateSpotGetOpenOrders = Entry('open_orders', ['private', 'spot'], 'GET', {'cost': 1})
