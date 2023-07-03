@@ -167,9 +167,9 @@ const mockCall = (url) => {
     }
 }
 
-const URL_MUST_CONTAINING_PROXY = {
-    'https://fakeProxy.com/https://api.hbdm.com/linear-swap-api/v3/swap_cross_matchresults_exact': true
-}
+const URL_MUST_CONTAINING_PROXY = [
+    'https://fakeProxy.com/https://api.hbdm.com/linear-swap-api/v3/swap_cross_matchresults_exact'
+]
 
 class ProxyError extends Error {
     constructor(message) {
@@ -182,12 +182,12 @@ class HuobiCustom extends huobi {
         const newUrl = this.implodeParams(url, this.omit(this.extend({}, this.urls), this.version));
         const urlWithoutParams = newUrl.split('?')[0];
         if (newUrl.includes("https://fakeProxy.com/")) {
-            if (URL_MUST_CONTAINING_PROXY[urlWithoutParams] === undefined) {
-                throw new ProxyError("URL shoun't contain https://fakeProxy.com/");
+            if (!URL_MUST_CONTAINING_PROXY.includes(urlWithoutParams)) {
+                throw new ProxyError(`URL "${urlWithoutParams}" shouldn't contain https://fakeProxy.com/`);
             }
         } else {
-            if (URL_MUST_CONTAINING_PROXY[urlWithoutParams] === true) {
-                throw new ProxyError("URL should contain https://fakeProxy.com/");
+            if (URL_MUST_CONTAINING_PROXY.some((key) => key.includes(urlWithoutParams))) {
+                throw new ProxyError(`URL "${urlWithoutParams}" should contain https://fakeProxy.com/`);
             }
         }
 

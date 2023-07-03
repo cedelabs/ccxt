@@ -3,17 +3,18 @@
 // ----------------------------------------------------------------------------
 
 import ccxt from '../../../dist/cjs/ccxt.js'
-const okx = ccxt['okx']
+const bybit = ccxt['bybit']
 
 // ----------------------------------------------------------------------------
 
 
 // mocking responses from the exchange needed for private methods execution
-const mockCall = () => ({});
+const mockCall = (url) => ({});
 
 const URL_MUST_CONTAINING_PROXY = [
-    'https://fakeProxy.com/https://www.okx.com/api/v5/asset/currencies',
-    'https://fakeProxy.com/https://www.okx.com/api/v5/account/balance'
+    'https://fakeProxy.com/https://api.bybit.com/asset/v3/private/coin-info/query',
+    'https://fakeProxy.com/https://api.bybit.com/user/v3/private/query-api',
+    'https://fakeProxy.com/https://api.bybit.com/contract/v3/private/account/wallet/balance',
 ]
 
 class ProxyError extends Error {
@@ -22,8 +23,9 @@ class ProxyError extends Error {
     }
 }
 
-class OKXCustom extends okx {
+class BybitCustom extends bybit {
     async fetch(url, method = 'GET', headers = undefined, body = undefined) {
+        console.log(url)
         const newUrl = this.implodeParams(url, this.omit(this.extend({}, this.urls), this.version));
         const urlWithoutParams = newUrl.split('?')[0];
         if (newUrl.includes("https://fakeProxy.com/")) {
@@ -41,23 +43,21 @@ class OKXCustom extends okx {
 }
 
 (async () => {
-    // Initialize the custom OKX exchange class
-    const exchange = new OKXCustom({
+    // Initialize the custom Bybit exchange class
+    const exchange = new BybitCustom({
         apiKey: '12345678',
         secret: '12345678',
-        password: '12345678',
         forcedProxy: 'https://fakeProxy.com/',
     });
 
     // Privates endpoints that will be called :
-    // https://fakeProxy.com/https://www.okx.com/api/v5/asset/currencies
-    // https://fakeProxy.com/https://www.okx.com/api/v5/account/balance
+    // https://fakeProxy.com/https://api.bybit.com/asset/v3/private/coin-info/query
+    // https://fakeProxy.com/https://api.bybit.com/user/v3/private/query-api
+    // https://fakeProxy.com/https://api.bybit.com/contract/v3/private/account/wallet/balance
 
     // Public endpoints that will be called :
-    // https://www.okx.com/api/v5/public/instruments?instType=SPOT
-    // https://www.okx.com/api/v5/public/instruments?instType=SWAP
-    // https://www.okx.com/api/v5/public/instruments?instType=FUTURES
-    // https://www.okx.com/api/v5/public/instruments?instType=OPTION
+    // https://api.bybit.com/spot/v1/symbols
+    // https://api.bybit.com/derivatives/v3/public/instruments-info
 
     await exchange.fetchBalance('ETH-USDT');
 })();

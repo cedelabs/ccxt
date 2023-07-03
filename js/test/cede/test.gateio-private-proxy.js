@@ -41,9 +41,9 @@ const mockCall = (url) => {
     }
 }
 
-const URL_MUST_CONTAINING_PROXY = {
-    'https://fakeProxy.com/https://api.gateio.ws/api/v4/spot/my_trades': true,
-}
+const URL_MUST_CONTAINING_PROXY = [
+    'https://fakeProxy.com/https://api.gateio.ws/api/v4/spot/my_trades'
+]
 
 class ProxyError extends Error {
     constructor(message) {
@@ -57,12 +57,12 @@ class GateioCustom extends gateio {
 
         const urlWithoutParams = newUrl.split('?')[0];
         if (newUrl.includes("https://fakeProxy.com/")) {
-            if (URL_MUST_CONTAINING_PROXY[urlWithoutParams] === undefined) {
-                throw new ProxyError("URL shoun't contain https://fakeProxy.com/");
+            if (!URL_MUST_CONTAINING_PROXY.includes(urlWithoutParams)) {
+                throw new ProxyError(`URL "${urlWithoutParams}" shouldn't contain https://fakeProxy.com/`);
             }
         } else {
-            if (URL_MUST_CONTAINING_PROXY[urlWithoutParams] === true) {
-                throw new ProxyError("URL should contain https://fakeProxy.com/");
+            if (URL_MUST_CONTAINING_PROXY.some((key) => key.includes(urlWithoutParams))) {
+                throw new ProxyError(`URL "${urlWithoutParams}" should contain https://fakeProxy.com/`);
             }
         }
         return mockCall(url);
