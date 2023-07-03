@@ -12,7 +12,7 @@ const bybit = ccxt['bybit']
 const mockCall = (url) => ({});
 
 const URL_MUST_CONTAINING_PROXY = [
-    'https://fakeProxy.com/https://api.bybit.com/asset/v3/private/coin-info/query',
+    'https://fakeProxy.com/https://api.bybit.com/v5/asset/coin/query-info',
     'https://fakeProxy.com/https://api.bybit.com/user/v3/private/query-api',
     'https://fakeProxy.com/https://api.bybit.com/contract/v3/private/account/wallet/balance',
 ]
