@@ -2,9 +2,8 @@
 
 // ----------------------------------------------------------------------------
 
-const jest = require('jest-mock')
-const gateio = require('../../gateio.js')
-const expect = require('expect');
+import ccxt from '../../../dist/cjs/ccxt.js'
+const gateio = ccxt['gateio']
 
 // ----------------------------------------------------------------------------
 

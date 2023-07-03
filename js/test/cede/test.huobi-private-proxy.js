@@ -2,9 +2,8 @@
 
 // ----------------------------------------------------------------------------
 
-const jest = require('jest-mock')
-const huobi = require('../../huobi.js')
-const expect = require('expect');
+import ccxt from '../../../dist/cjs/ccxt.js'
+const huobi = ccxt['huobi']
 
 // ----------------------------------------------------------------------------
 
