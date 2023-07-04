@@ -526,7 +526,11 @@ async function exportEverything () {
     const flat = flatten (errorHierarchy)
     flat.push ('error_hierarchy')
 
+<<<<<<< HEAD
     const typeExports = ['Market', 'Trade' , 'Fee', 'Ticker', 'OrderBook', 'Order', 'Transaction', 'Tickers', 'Currency', 'Balance', 'DepositAddress', 'WithdrawalResponse', 'DepositAddressResponse', 'OHLCV', 'Balances', 'PartialBalances', 'Dictionary', 'MinMax', 'Position', 'FundingRateHistory', 'Liquidation', 'FundingHistory', 'MarginMode', 'Greeks']
+=======
+    const typeExports = ['Market', 'Trade' , 'Fee', 'Ticker', 'OrderBook', 'Order', 'Transaction', 'Tickers', 'Currency', 'Balance', 'DepositAddress', 'WithdrawalResponse', 'DepositAddressResponse', 'OHLCV', 'Balances', 'PartialBalances', 'Dictionary', 'MinMax', 'Position', 'FundingRateHistory', 'Liquidation', 'FundingHistory', , 'CustomThrottlePriority']
+>>>>>>> 08c4b5ac3b (feat(store): STORE-885 - update version and add type (#14))
     const errorsExports = ['BaseError', 'ExchangeError', 'PermissionDenied', 'AccountNotEnabled', 'AccountSuspended', 'ArgumentsRequired', 'BadRequest', 'BadSymbol', 'MarginModeAlreadySet', 'BadResponse', 'NullResponse', 'InsufficientFunds', 'InvalidAddress', 'InvalidOrder', 'OrderNotFound', 'OrderNotCached', 'CancelPending', 'OrderImmediatelyFillable', 'OrderNotFillable', 'DuplicateOrderId', 'NotSupported', 'NetworkError', 'DDoSProtection', 'RateLimitExceeded', 'ExchangeNotAvailable', 'OnMaintenance', 'InvalidNonce', 'RequestTimeout', 'AuthenticationError', 'AddressPending', 'NoChange']
     const staticExports = ['version', 'Exchange', 'exchanges', 'pro', 'Precise', 'functions', 'errors'].concat(errorsExports).concat(typeExports)
 
