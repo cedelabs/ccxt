@@ -277,6 +277,11 @@ export default class gate extends Exchange {
                             'sub_accounts/{user_id}/keys/{key}': 1,
                         },
                     },
+                    'account': {
+                        'get': {
+                            'detail': 1,
+                        },
+                    },
                     'spot': {
                         'get': {
                             'fee': 1,
