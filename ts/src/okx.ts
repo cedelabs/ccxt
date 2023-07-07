@@ -849,8 +849,7 @@ export default class okx extends Exchange {
         });
     }
 
-    // Override
-    isUsingForcedProxy (params = {}, api = 'public') {
+    isUsingForcedProxy (params = {}, api = 'public') { // Override
         if (api === 'private') {
             return true;
         }

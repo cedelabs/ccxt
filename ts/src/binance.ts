@@ -1528,8 +1528,7 @@ export default class binance extends Exchange {
         });
     }
 
-    // Override
-    isUsingForcedProxy (params, api = undefined) {
+    isUsingForcedProxy (params, api = undefined) { // Override
         if (params && params.forceProxy) {
             delete params['forceProxy'];
             return true;

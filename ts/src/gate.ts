@@ -760,8 +760,7 @@ export default class gate extends Exchange {
         this.options['sandboxMode'] = enable;
     }
 
-    // Override
-    isUsingForcedProxy (params = {}, api = []) {
+    isUsingForcedProxy (params = {}, api = []) { // Override
         const authentication = api[0]; // public, private
         if (authentication === 'private') {
             return true;
