@@ -12,8 +12,12 @@ jobs:
         with:
           node-version: 18.10.0
           registry-url: https://registry.npmjs.org/
-      - run: npm i
+      - run: |
+          npm install
+      - env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          touch .npmrc
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
       - run: npm run build
       - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
