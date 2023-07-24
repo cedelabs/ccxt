@@ -299,11 +299,6 @@ export default class gate extends Exchange {
                             'loans': 200 / 15, // 15r/10s cost = 20 / 1.5 = 13.33
                         },
                     },
-                    'account': {
-                        'get': {
-                            'detail': 1,
-                        },
-                    },
                     'spot': {
                         // default is 200r/10s
                         'get': {
