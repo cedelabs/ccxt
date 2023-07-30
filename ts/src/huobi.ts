@@ -1059,7 +1059,6 @@ export default class huobi extends Exchange {
         });
     }
 
-    // Override
     isUsingForcedProxy (params = {}, api = []) {
         const authentication = api[1]; // public, private
         if (authentication === 'private') {
