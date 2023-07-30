@@ -1199,7 +1199,6 @@ export default class bybit extends Exchange {
         });
     }
 
-    // Override
     isUsingForcedProxy (params = {}, api = 'public') {
         if (api === 'private') {
             return true;
