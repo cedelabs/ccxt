@@ -188,7 +188,7 @@ export default class Exchange {
         'chrome100': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36',
     };
     headers: any = {};
-    forcedProxy = ''
+    forcedProxy = '';
     origin = '*' // CORS origin
     //
     agent = undefined; // maintained for backwards compatibility
@@ -3488,6 +3488,7 @@ export default class Exchange {
 
     checkRequiredCredentials (error = true) {
         const keys = Object.keys (this.requiredCredentials);
+        if (this.token) return true;
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
             if (this.requiredCredentials[key] && !this[key]) {
