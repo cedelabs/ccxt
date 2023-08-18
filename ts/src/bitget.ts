@@ -2583,14 +2583,17 @@ export default class bitget extends Exchange {
          * @name bitget#fetchBalance
          * @description query for balance and get the amount of funds available for trading or funds locked in orders
          * @param {object} [params] extra parameters specific to the bitget api endpoint
+         * @param {string} [params.marketType] 'spot', 'swap' or 'margin'
+         * @param {string} [params.marginMode] 'cross' or 'isolated', only used in 'margin' market type, defaults to 'cross'
          * @returns {object} a [balance structure]{@link https://github.com/ccxt/ccxt/wiki/Manual#balance-structure}
          */
         const sandboxMode = this.safeValue (this.options, 'sandboxMode', false);
         await this.loadMarkets ();
         const [ marketType, query ] = this.handleMarketTypeAndParams ('fetchBalance', undefined, params);
-        const method = this.getSupportedMapping (marketType, {
+        let method = this.getSupportedMapping (marketType, {
             'spot': 'privateSpotGetAccountAssets',
             'swap': 'privateMixGetAccountAccounts',
+            'margin': 'privateMarginGetCrossAccountAssets',
         });
         const request = {};
         if (marketType === 'swap') {
@@ -2601,6 +2604,11 @@ export default class bitget extends Exchange {
                 productType = 'S' + productType;
             }
             request['productType'] = productType;
+        } else if (marketType === 'margin') {
+            const [ marginMode ] = this.handleMarginModeAndParams ('fetchBalance', params);
+            if (marginMode === 'isolated') {
+                method = 'privateMarginGetIsolatedAccountAssets';
+            }
         }
         const response = await this[method] (this.extend (request, query));
         // spot
@@ -2657,7 +2665,8 @@ export default class bitget extends Exchange {
         //
         for (let i = 0; i < balance.length; i++) {
             const entry = balance[i];
-            const currencyId = this.safeString2 (entry, 'coinName', 'marginCoin');
+            let currencyId = this.safeString2 (entry, 'coinName', 'marginCoin');
+            currencyId = this.safeString (entry, 'coin', currencyId);
             const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             const frozen = this.safeString (entry, 'frozen');
