@@ -2787,6 +2787,8 @@ export default class bitget extends Exchange {
          * @see https://bitgetlimited.github.io/apidoc/en/margin/#get-cross-assets
          * @see https://bitgetlimited.github.io/apidoc/en/margin/#get-isolated-assets
          * @param {object} [params] extra parameters specific to the bitget api endpoint
+         * @param {string} [params.marketType] 'spot', 'swap' or 'margin'
+         * @param {string} [params.marginMode] 'cross' or 'isolated', only used in 'margin' market type, defaults to 'cross'
          * @returns {object} a [balance structure]{@link https://github.com/ccxt/ccxt/wiki/Manual#balance-structure}
          */
         const sandboxMode = this.safeValue (this.options, 'sandboxMode', false);
