@@ -375,7 +375,7 @@ export default class bybit extends Exchange {
                         'v5/position/switch-mode': 2.5,
                         'v5/execution/list': 2.5,
                         'v5/position/closed-pnl': 2.5,
-                        'v5/account/wallet-balance': 2.5,
+                        'v5/account/wallet-balance': 1,
                         'v5/account/borrow-history': 2.5,
                         'v5/account/collateral-info': 2.5,
                         'v5/account/mmp-state': 2.5,
@@ -387,7 +387,7 @@ export default class bybit extends Exchange {
                         'v5/asset/delivery-record': 2.5,
                         'v5/asset/settlement-record': 2.5,
                         'v5/asset/transfer/query-asset-info': 2.5,
-                        'v5/asset/transfer/query-account-coin-balance': 2.5,
+                        'ount/wallet-balancev5/asset/transfer/query-account-coin-balance': 2.5,
                         'v5/asset/transfer/query-transfer-coin-list': 2.5,
                         'v5/asset/transfer/query-inter-transfer-list': 2.5,
                         'v5/asset/transfer/query-sub-member-list': 2.5,
@@ -401,7 +401,7 @@ export default class bybit extends Exchange {
                         'v5/asset/coin/query-info': 2.5,
                         'v5/asset/withdraw/query-record': 2.5,
                         'v5/asset/withdraw/withdrawable-amount': 2.5,
-                        'v5/asset/transfer/query-account-coins-balance': 2.5,
+                        'v5/asset/transfer/query-account-coins-balance': 30,
                         // user
                         'v5/user/query-sub-members': 10,
                         'v5/user/query-api': 10,
@@ -3300,57 +3300,21 @@ export default class bybit extends Exchange {
          * @method
          * @name bybit#fetchBalance
          * @description query for balance and get the amount of funds available for trading or funds locked in orders
+         * @see https://bybit-exchange.github.io/docs/v5/enum#accounttype   // Types
+         * @see https://bybit-exchange.github.io/docs/v5/asset/all-balance  // Endpoint
          * @param {object} [params] extra parameters specific to the bybit api endpoint
+         * @param {object} [params.accountType] 'contract', 'spot, 'fund', 'option' or 'unified'
          * @returns {object} a [balance structure]{@link https://docs.ccxt.com/en/latest/manual.html?#balance-structure}
          */
         await this.loadMarkets ();
         const request = {};
-        let method = undefined;
-        const [ enableUnifiedMargin, enableUnifiedAccount ] = await this.isUnifiedEnabled ();
-        let type = undefined;
-        [ type, params ] = this.handleMarketTypeAndParams ('fetchBalance', undefined, params);
-        const isSpot = (type === 'spot');
-        if (isSpot) {
-            if (enableUnifiedAccount || enableUnifiedMargin) {
-                method = 'privateGetSpotV3PrivateAccount';
-            } else {
-                let marginMode = undefined;
-                [ marginMode, params ] = this.handleMarginModeAndParams ('fetchBalance', params);
-                if (marginMode !== undefined) {
-                    method = 'privateGetSpotV3PrivateCrossMarginAccount';
-                } else {
-                    method = 'privateGetSpotV3PrivateAccount';
-                }
-            }
-        } else if (enableUnifiedAccount || enableUnifiedMargin) {
-            if (type === 'swap') {
-                type = 'unified';
-            }
-        } else {
-            if (type === 'swap') {
-                type = 'contract';
-            }
+        const method = 'privateGetV5AssetTransferQueryAccountCoinsBalance';
+        if (!params['accountType']) {
+            params['accountType'] = 'spot';
         }
-        if (!isSpot) {
-            const accountTypes = this.safeValue (this.options, 'accountsByType', {});
-            const unifiedType = this.safeStringUpper (accountTypes, type, type);
-            if (unifiedType === 'FUND') {
-                // use this endpoint only we have no other choice
-                // because it requires transfer permission
-                method = 'privateGetAssetV3PrivateTransferAccountCoinsBalanceQuery';
-                request['accountType'] = unifiedType;
-            } else {
-                if (enableUnifiedAccount) {
-                    method = 'privateGetV5AccountWalletBalance';
-                    request['accountType'] = unifiedType;
-                } else if (enableUnifiedMargin) {
-                    method = 'privateGetUnifiedV3PrivateAccountWalletBalance';
-                } else {
-                    method = 'privateGetContractV3PrivateAccountWalletBalance';
-                    request['accountType'] = unifiedType;
-                }
-            }
-        }
+        const accountTypes = this.safeValue (this.options, 'accountsByType', {});
+        const accountType = this.safeString (accountTypes, params['accountType'], params['accountType']);
+        params['accountType'] = accountType;
         const response = await this[method] (this.extend (request, params));
         //
         // spot wallet
