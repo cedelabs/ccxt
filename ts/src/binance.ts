@@ -1564,8 +1564,8 @@ export default class binance extends Exchange {
     }
 
     isUsingForcedProxy (params, api = undefined) {
-        if (params && params.forceProxy) {
-            delete params['forceProxy'];
+        if (params && params.forcedProxy) {
+            delete params['forcedProxy'];
             return true;
         }
         return false;
