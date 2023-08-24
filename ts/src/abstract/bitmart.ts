@@ -72,6 +72,8 @@ interface Exchange {
     privatePostSpotV1MarginIsolatedRepay (params?: {}): Promise<implicitReturnType>;
     privatePostSpotV1MarginIsolatedTransfer (params?: {}): Promise<implicitReturnType>;
     privatePostContractPrivateTrades (params?: {}): Promise<implicitReturnType>;
+    privatePostSpotV4QueryHistoryOrders (params?: {}): Promise<implicitReturnType>;
+	privatePostSpotV4QueryOpenOrders (params?: {}): Promise<implicitReturnType>;
 }
 abstract class Exchange extends _Exchange {}
 
