@@ -3064,6 +3064,49 @@ export default class bybit extends Exchange {
         //         "time": 1675865290069
         //     }
         //
+        //  spot & swap
+        //     {
+        //         "retCode": 0,
+        //         "retMsg": "OK",
+        //         "result": {
+        //             "list": [
+        //                 {
+        //                     "totalEquity": "18070.32797922",
+        //                     "accountIMRate": "0.0101",
+        //                     "totalMarginBalance": "18070.32797922",
+        //                     "totalInitialMargin": "182.60183684",
+        //                     "accountType": "UNIFIED",
+        //                     "totalAvailableBalance": "17887.72614237",
+        //                     "accountMMRate": "0",
+        //                     "totalPerpUPL": "-0.11001349",
+        //                     "totalWalletBalance": "18070.43799271",
+        //                     "accountLTV": "0.017",
+        //                     "totalMaintenanceMargin": "0.38106773",
+        //                     "coin": [
+        //                         {
+        //                             "availableToBorrow": "2.5",
+        //                             "bonus": "0",
+        //                             "accruedInterest": "0",
+        //                             "availableToWithdraw": "0.805994",
+        //                             "totalOrderIM": "0",
+        //                             "equity": "0.805994",
+        //                             "totalPositionMM": "0",
+        //                             "usdValue": "12920.95352538",
+        //                             "unrealisedPnl": "0",
+        //                             "borrowAmount": "0",
+        //                             "totalPositionIM": "0",
+        //                             "walletBalance": "0.805994",
+        //                             "cumRealisedPnl": "0",
+        //                             "coin": "BTC"
+        //                         }
+        //                     ]
+        //                 }
+        //             ]
+        //         },
+        //         "retExtInfo": {},
+        //         "time": 1672125441042
+        //     }
+        //
         const result = {
             'info': response,
         };
@@ -3080,7 +3123,7 @@ export default class bybit extends Exchange {
             for (let i = 0; i < currencyList.length; i++) {
                 const entry = currencyList[i];
                 const accountType = this.safeString (entry, 'accountType');
-                if (accountType === 'UNIFIED' || accountType === 'CONTRACT') {
+                if (accountType === 'UNIFIED' || accountType === 'CONTRACT' || accountType === 'SPOT') {
                     const coins = this.safeValue (entry, 'coin');
                     for (let j = 0; j < coins.length; j++) {
                         const account = this.account ();
@@ -3091,7 +3134,7 @@ export default class bybit extends Exchange {
                             account['debt'] = Precise.stringAdd (loan, interest);
                         }
                         account['total'] = this.safeString (coinEntry, 'walletBalance');
-                        account['free'] = this.safeString (coinEntry, 'availableToWithdraw');
+                        account['free'] = this.safeString2 (coinEntry, 'availableToWithdraw', 'free');
                         // account['used'] = this.safeString (coinEntry, 'locked');
                         const currencyId = this.safeString (coinEntry, 'coin');
                         const code = this.safeCurrencyCode (currencyId);
@@ -3130,37 +3173,11 @@ export default class bybit extends Exchange {
          */
         await this.loadMarkets ();
         const request = {};
-        const [ enableUnifiedMargin, enableUnifiedAccount ] = await this.isUnifiedEnabled ();
-        const isUnifiedAccount = (enableUnifiedMargin || enableUnifiedAccount);
-        let type = undefined;
-        [ type, params ] = this.handleMarketTypeAndParams ('fetchBalance', undefined, params);
-        const isSpot = (type === 'spot');
-        const isSwap = (type === 'swap');
-        if (isUnifiedAccount) {
-            if (isSpot || isSwap) {
-                type = 'unified';
-            }
-        } else {
-            if (isSwap) {
-                type = 'contract';
-            }
-        }
+        const method = 'privateGetV5AssetTransferQueryAccountCoinsBalance';
         const accountTypes = this.safeValue (this.options, 'accountsByType', {});
-        const unifiedType = this.safeStringUpper (accountTypes, type, type);
-        let marginMode = undefined;
-        [ marginMode, params ] = this.handleMarginModeAndParams ('fetchBalance', params);
-        let response = undefined;
-        if (isSpot && (marginMode !== undefined)) {
-            response = await this.privateGetV5SpotCrossMarginTradeAccount (this.extend (request, params));
-        } else if (unifiedType === 'FUND') {
-            // use this endpoint only we have no other choice
-            // because it requires transfer permission
-            request['accountType'] = unifiedType;
-            response = await this.privateGetV5AssetTransferQueryAccountCoinsBalance (this.extend (request, params));
-        } else {
-            request['accountType'] = unifiedType;
-            response = await this.privateGetV5AccountWalletBalance (this.extend (request, params));
-        }
+        const accountType = this.safeString (accountTypes, params['accountType'], 'SPOT');
+        params['accountType'] = accountType;
+        const response = await this[method] (this.extend (request, params));
         //
         // cross
         //     {
