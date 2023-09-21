@@ -2218,6 +2218,7 @@ export default class gate extends Exchange {
                     'withdraw': {
                         'fee': this.parseNumber (withdrawFixOnChains[chainKey]),
                         'percentage': false,
+                        'min': this.safeNumber (fee, 'withdraw_amount_mini'),
                     },
                     'deposit': {
                         'fee': undefined,
