@@ -746,11 +746,12 @@ export default class bitfinex2 extends Exchange {
                 const networkId = this.safeString (pair, 0);
                 const currencyId = this.safeString (this.safeValue (pair, 1, []), 0);
                 if (currencyId === cleanId) {
-                    const network = this.safeNetwork (networkId);
+                    const network = rawType ?? this.safeNetwork (networkId);
                     networks[network] = {
                         'info': networkId,
                         'id': networkId.toLowerCase (),
                         'network': networkId,
+                        'underlyingNetwork': network,
                         'active': undefined,
                         'deposit': undefined,
                         'withdraw': undefined,
@@ -778,19 +779,36 @@ export default class bitfinex2 extends Exchange {
         const networksById = {
             'BITCOIN': 'BTC',
             'LITECOIN': 'LTC',
-            'ETHEREUM': 'ERC20',
-            'TETHERUSE': 'ERC20',
+            'ERC20': 'ETH',
+            'TETHERUSE': 'ETH',
             'TETHERUSO': 'OMNI',
             'TETHERUSL': 'LIQUID',
-            'TETHERUSX': 'TRC20',
+            'TETHERUSX': 'TRX',
             'TETHERUSS': 'EOS',
             'TETHERUSDTAVAX': 'AVAX',
             'TETHERUSDTSOL': 'SOL',
-            'TETHERUSDTALG': 'ALGO',
+            'TETHERUSDTALG': 'ALG',
             'TETHERUSDTBCH': 'BCH',
             'TETHERUSDTKSM': 'KSM',
             'TETHERUSDTDVF': 'DVF',
             'TETHERUSDTOMG': 'OMG',
+            'TETHERUSDTXTZ': 'XTZ',
+            'TETHERUSDTNEAR': 'NEAR',
+            'TETHERUSDTDOT': 'DOT',
+            'TETHERUSDTPLY': 'PLY',
+            'TETHERUSDTKAVA': 'KAVA',
+            'TETHERMXNTE': 'ETH',
+            'TETHERXAUTE': 'ETH',
+            'TETHEREUE': 'ETH',
+            'TETHERCNHTX': 'ETH',
+            'TETHERCNHTE': 'ETH',
+            'TETHERUSDTZK': 'ZK2',
+            'XAUT': 'ETH',
+            'CNHT': 'ETH',
+            'EUT': 'BSC',
+            'MXNT': 'ETH',
+            'NEOGAS': 'NEO',
+            'MATICM': 'NEO',
         };
         return this.safeString (networksById, networkId, networkId);
     }

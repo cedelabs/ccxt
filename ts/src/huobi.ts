@@ -8,6 +8,13 @@ import { TICK_SIZE, TRUNCATE } from './base/functions/number.js';
 import { sha256 } from './static_dependencies/noble-hashes/sha256.js';
 import { Int, OrderSide, OrderType } from './base/types.js';
 
+/* eslint-disable */
+type MappedNetwork = {
+    ecid: string;
+    icid: string;
+}
+/* eslint-enable */
+
 //  ---------------------------------------------------------------------------
 
 /**
@@ -2809,7 +2816,85 @@ export default class huobi extends Exchange {
         return this.safeString (defaultAccount, 'id');
     }
 
-    async fetchCurrencies (params = {}) {
+    async generateMethodsMapping (currencies: any, cedeMapping: any) {
+        const flatCurrencies = currencies.data.map ((e: any) => e.currency);
+        const mappedMethods: Record<string, any> = {};
+        cedeMapping.forEach ((mn: MappedNetwork) => {
+            mappedMethods[mn.ecid] = mn.ecid;
+        });
+        flatCurrencies.forEach ((currency: string) => {
+            // erc20 => erc20usdt
+            cedeMapping.forEach ((mn: MappedNetwork) => {
+                const methodWithCurency = mn.ecid.toLowerCase () + currency.toLowerCase ();
+                mappedMethods[methodWithCurency] = mn.ecid;
+            });
+            // erc20 => usdterc20
+            cedeMapping.forEach ((mn: MappedNetwork) => {
+                const methodWithCurency = currency.toLowerCase () + mn.ecid.toLowerCase ();
+                mappedMethods[methodWithCurency] = mn.ecid;
+            });
+        });
+        return mappedMethods;
+    }
+
+    safeNetwork (networkId) {
+        const networksById = {
+            'hbtc': 'ERC20',
+            'ht2': 'ERC20',
+            'hbch': 'ERC20',
+            'eth': 'ERC20',
+            'rain': 'ERC20',
+            'xfi': 'ERC20',
+            'arbieth': 'ARB',
+            'gas1': 'neo1',
+            'avax': 'ARC20',
+            'atm': 'CHZ20',
+            'babydoge': 'BEP20',
+            'bscface1': 'BEP20',
+            'mbl': 'ONT',
+            'wld': 'OPT',
+            'aury': 'SOL',
+            'bonk': 'SOL',
+            'wlkn': 'SOL',
+            'dio': 'SOL',
+            'elu': 'SOL',
+            'gari': 'SOL',
+            'gmt': 'SOL',
+            'hbb': 'SOL',
+            'sao': 'SOL',
+            'like': 'SOL',
+            'mlpx': 'SOL',
+            'zbc': 'SOL',
+            'sns': 'SOL',
+            'dav': 'ARB',
+            'ARBITRUM': 'ARB',
+            'ARBITRUMONE': 'ARB',
+            'SOLANA': 'SOL',
+            'C-CHAIN': 'cchain',
+            'BTT': 'BTT2',
+            'gns': 'ARB',
+            'ipv': 'KLAY',
+            'joy': 'KLAY',
+            'mbx': 'KLAY',
+            'npt': 'KLAY',
+            'we': 'KLAY',
+            'well': 'GLMR',
+            'wmt': 'ADA',
+            'roco': 'cchain',
+            'fio': 'cchain',
+            'hec': 'cchain',
+            'gmx': 'cchain', // Not sure, as it's tagged as `cchainerc20`
+            'xeta': 'cchain', // Not sure, as it's tagged as `cchainerc20`
+            'kube': 'ADA',
+            'nt': 'HRC20',
+            'solo': 'XRP',
+            'tao': 'NEAR',
+            'uft': 'ERC20',
+        };
+        return this.safeString (networksById, networkId, networkId);
+    }
+
+    async fetchCurrencies (params = {}, cedeMapping = []) {
         /**
          * @method
          * @name huobi#fetchCurrencies
@@ -2855,6 +2940,7 @@ export default class huobi extends Exchange {
         //    }
         //    }
         //
+        const methodsMapping = await this.generateMethodsMapping (response, cedeMapping);
         const data = this.safeValue (response, 'data', []);
         const result = {};
         this.options['networkChainIdsByNames'] = {};
@@ -2894,10 +2980,14 @@ export default class huobi extends Exchange {
                     minPrecision = (minPrecision === undefined) ? precision : Precise.stringMin (precision, minPrecision);
                 }
                 const fee = this.safeNumber (chainEntry, 'transactFeeWithdraw');
+                const safeCode = this.safeNetwork (networkCode);
+                const safeNetwork = this.safeNetwork (uniqueChainId);
+                const underlyingNetwork = methodsMapping[safeCode] || methodsMapping[safeCode.toLowerCase ()] || methodsMapping[safeNetwork] || methodsMapping[safeNetwork.toLowerCase ()];
                 networks[networkCode] = {
                     'info': chainEntry,
                     'id': uniqueChainId,
                     'network': networkCode,
+                    'underlyingNetwork': underlyingNetwork ?? undefined,
                     'limits': {
                         'withdraw': {
                             'min': minWithdraw,
