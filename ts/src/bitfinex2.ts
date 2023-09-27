@@ -808,7 +808,6 @@ export default class bitfinex2 extends Exchange {
             'EUT': 'BSC',
             'MXNT': 'ETH',
             'NEOGAS': 'NEO',
-            'MATICM': 'NEO',
         };
         return this.safeString (networksById, networkId, networkId);
     }
