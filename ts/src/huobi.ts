@@ -2816,22 +2816,20 @@ export default class huobi extends Exchange {
         return this.safeString (defaultAccount, 'id');
     }
 
-    async generateMethodsMapping (currencies: any, cedeMapping: any) {
+    async generateMethodsMapping (currencies: any) {
         const flatCurrencies = currencies.data.map ((e: any) => e.currency);
         const mappedMethods: Record<string, any> = {};
-        cedeMapping.forEach ((mn: MappedNetwork) => {
-            mappedMethods[mn.ecid] = mn.ecid;
-        });
-        flatCurrencies.forEach ((currency: string) => {
-            // erc20 => erc20usdt
-            cedeMapping.forEach ((mn: MappedNetwork) => {
-                const methodWithCurency = mn.ecid.toLowerCase () + currency.toLowerCase ();
-                mappedMethods[methodWithCurency] = mn.ecid;
-            });
-            // erc20 => usdterc20
-            cedeMapping.forEach ((mn: MappedNetwork) => {
-                const methodWithCurency = currency.toLowerCase () + mn.ecid.toLowerCase ();
-                mappedMethods[methodWithCurency] = mn.ecid;
+        // @ts-ignore
+        this.cedeMapping.forEach ((mn: MappedNetwork) => {
+            const flattenEcid = mn.ecid.toLowerCase ();
+            mappedMethods[flattenEcid] = flattenEcid;
+            flatCurrencies.forEach ((currency: string) => {
+                // erc20 => erc20usdt
+                const methodWithCurency = flattenEcid + currency.toLowerCase ();
+                // erc20 => usdterc20
+                const methodInversedWithCurrency = currency.toLowerCase () + flattenEcid;
+                mappedMethods[methodWithCurency] = flattenEcid;
+                mappedMethods[methodInversedWithCurrency] = flattenEcid;
             });
         });
         return mappedMethods;
@@ -2839,62 +2837,62 @@ export default class huobi extends Exchange {
 
     safeNetwork (networkId) {
         const networksById = {
-            'hbtc': 'ERC20',
-            'ht2': 'ERC20',
-            'hbch': 'ERC20',
-            'eth': 'ERC20',
-            'rain': 'ERC20',
-            'xfi': 'ERC20',
-            'arbieth': 'ARB',
+            'hbtc': 'erc20',
+            'ht2': 'erc20',
+            'hbch': 'erc20',
+            'eth': 'erc20',
+            'rain': 'erc20',
+            'xfi': 'erc20',
+            'arbieth': 'arb',
             'gas1': 'neo1',
-            'avax': 'ARC20',
-            'atm': 'CHZ20',
-            'babydoge': 'BEP20',
-            'bscface1': 'BEP20',
-            'mbl': 'ONT',
-            'wld': 'OPT',
-            'aury': 'SOL',
-            'bonk': 'SOL',
-            'wlkn': 'SOL',
-            'dio': 'SOL',
-            'elu': 'SOL',
-            'gari': 'SOL',
-            'gmt': 'SOL',
-            'hbb': 'SOL',
-            'sao': 'SOL',
-            'like': 'SOL',
-            'mlpx': 'SOL',
-            'zbc': 'SOL',
-            'sns': 'SOL',
-            'dav': 'ARB',
-            'ARBITRUM': 'ARB',
-            'ARBITRUMONE': 'ARB',
-            'SOLANA': 'SOL',
+            'avax': 'arc20',
+            'atm': 'chz20',
+            'babydoge': 'bep20',
+            'bscface1': 'bep20',
+            'mbl': 'ont',
+            'wld': 'opt',
+            'aury': 'sol',
+            'bonk': 'sol',
+            'wlkn': 'sol',
+            'dio': 'sol',
+            'elu': 'sol',
+            'gari': 'sol',
+            'gmt': 'sol',
+            'hbb': 'sol',
+            'sao': 'sol',
+            'like': 'sol',
+            'mlpx': 'sol',
+            'zbc': 'sol',
+            'sns': 'sol',
+            'dav': 'arb',
+            'ARBITRUM': 'arb',
+            'ARBITRUMONE': 'arb',
+            'SOLANA': 'sol',
             'C-CHAIN': 'cchain',
-            'BTT': 'BTT2',
-            'gns': 'ARB',
-            'ipv': 'KLAY',
-            'joy': 'KLAY',
-            'mbx': 'KLAY',
-            'npt': 'KLAY',
-            'we': 'KLAY',
-            'well': 'GLMR',
-            'wmt': 'ADA',
+            'BTT': 'btt2',
+            'gns': 'arb',
+            'ipv': 'klay',
+            'joy': 'klay',
+            'mbx': 'klay',
+            'npt': 'klay',
+            'we': 'klay',
+            'well': 'glmr',
+            'wmt': 'ada',
             'roco': 'cchain',
             'fio': 'cchain',
             'hec': 'cchain',
             'gmx': 'cchain', // Not sure, as it's tagged as `cchainerc20`
             'xeta': 'cchain', // Not sure, as it's tagged as `cchainerc20`
             'kube': 'ADA',
-            'nt': 'HRC20',
-            'solo': 'XRP',
-            'tao': 'NEAR',
-            'uft': 'ERC20',
+            'nt': 'erc20',
+            'solo': 'xrp',
+            'tao': 'near',
+            'uft': 'erc20',
         };
         return this.safeString (networksById, networkId, networkId);
     }
 
-    async fetchCurrencies (params = {}, cedeMapping = []) {
+    async fetchCurrencies (params = {}) {
         /**
          * @method
          * @name huobi#fetchCurrencies
@@ -2940,16 +2938,17 @@ export default class huobi extends Exchange {
         //    }
         //    }
         //
-        const methodsMapping = await this.generateMethodsMapping (response, cedeMapping);
+        const methodsMapping = await this.generateMethodsMapping (response);
         const data = this.safeValue (response, 'data', []);
         const result = {};
-        this.options['networkChainIdsByNames'] = {};
         this.options['networkNamesByChainIds'] = {};
+        this.options['ecidByChainIds'] = {};
+        this.options['chainIdbyEcids'] = {};
         for (let i = 0; i < data.length; i++) {
             const entry = data[i];
             const currencyId = this.safeString (entry, 'currency');
             const code = this.safeCurrencyCode (currencyId);
-            this.options['networkChainIdsByNames'][code] = {};
+            this.options['chainIdbyEcids'][code] = {};
             const chains = this.safeValue (entry, 'chains', []);
             const networks = {};
             const instStatus = this.safeString (entry, 'instStatus');
@@ -2962,10 +2961,9 @@ export default class huobi extends Exchange {
             for (let j = 0; j < chains.length; j++) {
                 const chainEntry = chains[j];
                 const uniqueChainId = this.safeString (chainEntry, 'chain'); // i.e. usdterc20, trc20usdt ...
-                const title = this.safeString (chainEntry, 'displayName');
-                this.options['networkChainIdsByNames'][code][title] = uniqueChainId;
-                this.options['networkNamesByChainIds'][uniqueChainId] = title;
-                const networkCode = this.networkIdToCode (title, code);
+                const displayName = this.safeString (chainEntry, 'displayName');
+                // this.options['networkNamesByChainIds'][uniqueChainId] = title;
+                // const networkCode = this.networkIdToCode (title, code);
                 minWithdraw = this.safeNumber (chainEntry, 'minWithdrawAmt');
                 maxWithdraw = this.safeNumber (chainEntry, 'maxWithdrawAmt');
                 const withdrawStatus = this.safeString (chainEntry, 'withdrawStatus');
@@ -2980,14 +2978,15 @@ export default class huobi extends Exchange {
                     minPrecision = (minPrecision === undefined) ? precision : Precise.stringMin (precision, minPrecision);
                 }
                 const fee = this.safeNumber (chainEntry, 'transactFeeWithdraw');
-                const safeCode = this.safeNetwork (networkCode);
+                const safeCode = this.safeNetwork (displayName);
                 const safeNetwork = this.safeNetwork (uniqueChainId);
-                const underlyingNetwork = methodsMapping[safeCode] || methodsMapping[safeCode.toLowerCase ()] || methodsMapping[safeNetwork] || methodsMapping[safeNetwork.toLowerCase ()];
-                networks[networkCode] = {
+                const ecid = methodsMapping[safeCode.toLowerCase ()] || methodsMapping[safeNetwork.toLowerCase ()];
+                this.options['ecidByChainIds'][uniqueChainId] = ecid;
+                this.options['chainIdbyEcids'][code][ecid] = uniqueChainId;
+                networks[safeCode] = {
                     'info': chainEntry,
                     'id': uniqueChainId,
-                    'network': networkCode,
-                    'underlyingNetwork': underlyingNetwork ?? undefined,
+                    'network': ecid,
                     'limits': {
                         'withdraw': {
                             'min': minWithdraw,
@@ -3038,18 +3037,23 @@ export default class huobi extends Exchange {
         return super.networkIdToCode (networkTitle);
     }
 
-    networkCodeToId (networkCode, currencyCode = undefined) { // here network-id is provided as a pair of currency & chain (i.e. trc20usdt)
-        if (currencyCode === undefined) {
-            throw new ArgumentsRequired (this.id + ' networkCodeToId() requires a currencyCode argument');
-        }
-        const keys = Object.keys (this.options['networkChainIdsByNames']);
+    networkIdToEcid (chainId) {
+        const keys = Object.keys (this.options['ecidByChainIds']);
         const keysLength = keys.length;
         if (keysLength === 0) {
-            throw new ExchangeError (this.id + ' networkCodeToId() - markets need to be loaded at first');
+            throw new ExchangeError (this.id + ' networkIdToEcid() - markets need to be loaded at first');
         }
-        const uniqueNetworkIds = this.safeValue (this.options['networkChainIdsByNames'], currencyCode, {});
-        const networkTitle = super.networkCodeToId (networkCode);
-        return this.safeValue (uniqueNetworkIds, networkTitle, networkTitle);
+        return this.safeValue (this.options['ecidByChainIds'], chainId, chainId);
+    }
+
+    ecidToNetworkId (ecid, currencyCode = undefined) {
+        const keys = Object.keys (this.options['chainIdbyEcids']);
+        const keysLength = keys.length;
+        if (keysLength === 0) {
+            throw new ExchangeError (this.id + ' ecidToNetworkId() - markets need to be loaded at first');
+        }
+        const uniqueNetworkIds = this.safeValue (this.options['chainIdbyEcids'], currencyCode, {});
+        return this.safeValue (uniqueNetworkIds, ecid, ecid);
     }
 
     async fetchBalance (params = {}) {
@@ -5362,7 +5366,7 @@ export default class huobi extends Exchange {
             'currency': code,
             'address': address,
             'tag': tag,
-            'network': this.networkIdToCode (networkId, code),
+            'network': this.networkIdToEcid (networkId),
             'note': note,
             'info': depositAddress,
         };
@@ -5411,11 +5415,9 @@ export default class huobi extends Exchange {
          * @returns {object} an [address structure]{@link https://github.com/ccxt/ccxt/wiki/Manual#address-structure}
          */
         await this.loadMarkets ();
-        const currency = this.currency (code);
-        const [ networkCode, paramsOmited ] = this.handleNetworkCodeAndParams (params);
+        const [ ecid, paramsOmited ] = this.handleEcidAndParams (params);
         const indexedAddresses = await this.fetchDepositAddressesByNetwork (code, paramsOmited);
-        const selectedNetworkCode = this.selectNetworkCodeFromUnifiedNetworks (currency['code'], networkCode, indexedAddresses);
-        return indexedAddresses[selectedNetworkCode];
+        return indexedAddresses[ecid];
     }
 
     async fetchWithdrawAddresses (code: string, note = undefined, networkCode = undefined, params = {}) {
@@ -5643,7 +5645,7 @@ export default class huobi extends Exchange {
             'txid': txHash,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
-            'network': this.networkIdToCode (networkId, code),
+            'network': this.networkIdToEcid (networkId),
             'address': this.safeString (transaction, 'address'),
             'addressTo': undefined,
             'addressFrom': undefined,
@@ -5710,32 +5712,32 @@ export default class huobi extends Exchange {
         if (tag !== undefined) {
             request['addr-tag'] = tag; // only for XRP?
         }
-        let networkCode = undefined;
-        [ networkCode, params ] = this.handleNetworkCodeAndParams (params);
-        if (networkCode !== undefined) {
-            request['chain'] = this.networkCodeToId (networkCode, code);
+        let ecid = undefined;
+        [ ecid, params ] = this.handleEcidAndParams (params);
+        if (ecid !== undefined) {
+            request['chain'] = this.ecidToNetworkId (ecid, code);
         }
-        amount = parseFloat (this.currencyToPrecision (code, amount, networkCode));
+        amount = parseFloat (this.currencyToPrecision (code, amount, ecid));
         const withdrawOptions = this.safeValue (this.options, 'withdraw', {});
         if (this.safeValue (withdrawOptions, 'includeFee', false)) {
             let fee = this.safeNumber (params, 'fee');
             if (fee === undefined) {
                 const currencies = await this.fetchCurrencies ();
                 this.currencies = this.deepExtend (this.currencies, currencies);
-                const targetNetwork = this.safeValue (currency['networks'], networkCode, {});
+                const targetNetwork = this.safeValue (currency['networks'], ecid, {});
                 fee = this.safeNumber (targetNetwork, 'fee');
                 if (fee === undefined) {
                     throw new ArgumentsRequired (this.id + ' withdraw() function can not find withdraw fee for chosen network. You need to re-load markets with "exchange.loadMarkets(true)", or provide the "fee" parameter');
                 }
             }
             // fee needs to be deducted from whole amount
-            const feeString = this.currencyToPrecision (code, fee, networkCode);
+            const feeString = this.currencyToPrecision (code, fee, ecid);
             params = this.omit (params, 'fee');
             const amountString = this.numberToString (amount);
             const amountSubtractedString = Precise.stringSub (amountString, feeString);
             const amountSubtracted = parseFloat (amountSubtractedString);
             request['fee'] = parseFloat (feeString);
-            amount = parseFloat (this.currencyToPrecision (code, amountSubtracted, networkCode));
+            amount = parseFloat (this.currencyToPrecision (code, amountSubtracted, ecid));
         }
         request['amount'] = amount;
         const response = await this.spotPrivatePostV1DwWithdrawApiCreate (this.extend (request, params));
@@ -8016,7 +8018,7 @@ export default class huobi extends Exchange {
             const chainEntry = chains[j];
             const networkId = this.safeString (chainEntry, 'chain');
             const withdrawFeeType = this.safeString (chainEntry, 'withdrawFeeType');
-            const networkCode = this.networkIdToCode (networkId);
+            const ecid = this.networkIdToEcid (networkId);
             let withdrawFee = undefined;
             let withdrawResult = undefined;
             if (withdrawFeeType === 'fixed') {
@@ -8032,7 +8034,7 @@ export default class huobi extends Exchange {
                     'percentage': true,
                 };
             }
-            result['networks'][networkCode] = {
+            result['networks'][ecid] = {
                 'withdraw': withdrawResult,
                 'deposit': {
                     'fee': undefined,

@@ -750,8 +750,7 @@ export default class bitfinex2 extends Exchange {
                     networks[network] = {
                         'info': networkId,
                         'id': networkId.toLowerCase (),
-                        'network': networkId,
-                        'underlyingNetwork': network,
+                        'network': network,
                         'active': undefined,
                         'deposit': undefined,
                         'withdraw': undefined,
@@ -776,6 +775,7 @@ export default class bitfinex2 extends Exchange {
     }
 
     safeNetwork (networkId) {
+        // mapping method to network
         const networksById = {
             'BITCOIN': 'BTC',
             'LITECOIN': 'LTC',
