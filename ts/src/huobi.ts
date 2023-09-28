@@ -2881,8 +2881,8 @@ export default class huobi extends Exchange {
             'roco': 'cchain',
             'fio': 'cchain',
             'hec': 'cchain',
-            'gmx': 'cchain', // Not sure, as it's tagged as `cchainerc20`
-            'xeta': 'cchain', // Not sure, as it's tagged as `cchainerc20`
+            'gmx': 'cchain',
+            'xeta': 'cchain',
             'kube': 'ADA',
             'nt': 'erc20',
             'solo': 'xrp',
