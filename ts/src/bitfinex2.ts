@@ -779,6 +779,7 @@ export default class bitfinex2 extends Exchange {
         const networksById = {
             'BITCOIN': 'BTC',
             'LITECOIN': 'LTC',
+            'ETHEREUM': 'ETH',
             'ERC20': 'ETH',
             'TETHERUSE': 'ETH',
             'TETHERUSO': 'OMNI',
@@ -805,9 +806,11 @@ export default class bitfinex2 extends Exchange {
             'TETHERUSDTZK': 'ZK2',
             'XAUT': 'ETH',
             'CNHT': 'ETH',
-            'EUT': 'BSC',
+            'EUT': 'ETH',
             'MXNT': 'ETH',
             'NEOGAS': 'NEO',
+            'LES': 'EOS',
+            'LET': 'ETH',
         };
         return this.safeString (networksById, networkId, networkId);
     }
