@@ -2960,6 +2960,14 @@ export default class Exchange {
         return [ networkCodeInParams, params ];
     }
 
+    handleEcidAndParams (params) {
+        const ecidInParams = this.safeString2 (params, 'ecid', 'network');
+        if (ecidInParams !== undefined) {
+            params = this.omit (params, [ 'ecid', 'network' ]);
+        }
+        return [ ecidInParams, params ];
+    }
+
     defaultNetworkCode (currencyCode) {
         let defaultNetworkCode = undefined;
         const defaultNetworks = this.safeValue (this.options, 'defaultNetworks', {});
