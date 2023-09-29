@@ -16,7 +16,1014 @@ export default class huobi extends htx {
     describe () {
         return this.deepExtend (super.describe (), {
             'id': 'huobi',
+<<<<<<< HEAD
             'alias': true,
+=======
+            'name': 'Huobi',
+            'countries': [ 'CN' ],
+            'rateLimit': 100,
+            'userAgent': this.userAgents['chrome100'],
+            'certified': true,
+            'version': 'v1',
+            'hostname': 'api.huobi.pro', // api.testnet.huobi.pro
+            'pro': true,
+            'has': {
+                'CORS': undefined,
+                'spot': true,
+                'margin': true,
+                'swap': true,
+                'future': true,
+                'option': undefined,
+                'addMargin': undefined,
+                'borrowMargin': true,
+                'cancelAllOrders': true,
+                'cancelOrder': true,
+                'cancelOrders': true,
+                'createDepositAddress': undefined,
+                'createOrder': true,
+                'createReduceOnlyOrder': false,
+                'createStopLimitOrder': true,
+                'createStopMarketOrder': true,
+                'createStopOrder': true,
+                'fetchAccounts': true,
+                'fetchBalance': true,
+                'fetchBidsAsks': undefined,
+                'fetchBorrowInterest': true,
+                'fetchBorrowRate': undefined,
+                'fetchBorrowRateHistories': undefined,
+                'fetchBorrowRateHistory': undefined,
+                'fetchBorrowRates': true,
+                'fetchBorrowRatesPerSymbol': true,
+                'fetchCanceledOrders': undefined,
+                'fetchClosedOrder': undefined,
+                'fetchClosedOrders': true,
+                'fetchCurrencies': true,
+                'fetchDeposit': undefined,
+                'fetchDepositAddress': true,
+                'fetchDepositAddresses': undefined,
+                'fetchDepositAddressesByNetwork': true,
+                'fetchDeposits': true,
+                'fetchDepositWithdrawFee': 'emulated',
+                'fetchDepositWithdrawFees': true,
+                'fetchFundingHistory': true,
+                'fetchFundingRate': true,
+                'fetchFundingRateHistory': true,
+                'fetchFundingRates': true,
+                'fetchIndexOHLCV': true,
+                'fetchL3OrderBook': undefined,
+                'fetchLedger': true,
+                'fetchLedgerEntry': undefined,
+                'fetchLeverage': false,
+                'fetchLeverageTiers': true,
+                'fetchLiquidations': true,
+                'fetchMarketLeverageTiers': true,
+                'fetchMarkets': true,
+                'fetchMarkOHLCV': true,
+                'fetchMyLiquidations': false,
+                'fetchMyTrades': true,
+                'fetchOHLCV': true,
+                'fetchOpenInterest': true,
+                'fetchOpenInterestHistory': true,
+                'fetchOpenOrder': undefined,
+                'fetchOpenOrders': true,
+                'fetchOrder': true,
+                'fetchOrderBook': true,
+                'fetchOrderBooks': undefined,
+                'fetchOrders': true,
+                'fetchOrderTrades': true,
+                'fetchPosition': true,
+                'fetchPositions': true,
+                'fetchPositionsRisk': false,
+                'fetchPremiumIndexOHLCV': true,
+                'fetchSettlementHistory': true,
+                'fetchStatus': true,
+                'fetchTicker': true,
+                'fetchTickers': true,
+                'fetchTime': true,
+                'fetchTrades': true,
+                'fetchTradingFee': true,
+                'fetchTradingFees': false,
+                'fetchTradingLimits': true,
+                'fetchTransactionFee': undefined,
+                'fetchTransactionFees': undefined,
+                'fetchTransactions': undefined,
+                'fetchTransfers': undefined,
+                'fetchWithdrawAddresses': true,
+                'fetchWithdrawal': undefined,
+                'fetchWithdrawals': true,
+                'fetchWithdrawalWhitelist': undefined,
+                'reduceMargin': undefined,
+                'repayMargin': true,
+                'setLeverage': true,
+                'setMarginMode': false,
+                'setPositionMode': false,
+                'signIn': undefined,
+                'transfer': true,
+                'withdraw': true,
+            },
+            'timeframes': {
+                '1m': '1min',
+                '5m': '5min',
+                '15m': '15min',
+                '30m': '30min',
+                '1h': '60min',
+                '4h': '4hour',
+                '1d': '1day',
+                '1w': '1week',
+                '1M': '1mon',
+                '1y': '1year',
+            },
+            'urls': {
+                // 'test': {
+                //     'market': 'https://api.testnet.huobi.pro',
+                //     'public': 'https://api.testnet.huobi.pro',
+                //     'private': 'https://api.testnet.huobi.pro',
+                // },
+                'logo': 'https://user-images.githubusercontent.com/1294454/76137448-22748a80-604e-11ea-8069-6e389271911d.jpg',
+                'hostnames': {
+                    'contract': 'api.hbdm.com',
+                    'spot': 'api.huobi.pro',
+                    'status': {
+                        'spot': 'status.huobigroup.com',
+                        'future': {
+                            'inverse': 'status-dm.huobigroup.com',
+                            'linear': 'status-linear-swap.huobigroup.com', // USDT-Margined Contracts
+                        },
+                        'swap': {
+                            'inverse': 'status-swap.huobigroup.com',
+                            'linear': 'status-linear-swap.huobigroup.com', // USDT-Margined Contracts
+                        },
+                    },
+                    // recommended for AWS
+                    // 'contract': 'api.hbdm.vn',
+                    // 'spot': 'api-aws.huobi.pro',
+                },
+                'api': {
+                    'status': 'https://{hostname}',
+                    'contract': 'https://{hostname}',
+                    'spot': 'https://{hostname}',
+                    'public': 'https://{hostname}',
+                    'private': 'https://{hostname}',
+                    'v2Public': 'https://{hostname}',
+                    'v2Private': 'https://{hostname}',
+                },
+                'www': 'https://www.huobi.com',
+                'referral': {
+                    'url': 'https://www.huobi.com/en-us/v/register/double-invite/?inviter_id=11343840&invite_code=6rmm2223',
+                    'discount': 0.15,
+                },
+                'doc': [
+                    'https://huobiapi.github.io/docs/spot/v1/en/',
+                    'https://huobiapi.github.io/docs/dm/v1/en/',
+                    'https://huobiapi.github.io/docs/coin_margined_swap/v1/en/',
+                    'https://huobiapi.github.io/docs/usdt_swap/v1/en/',
+                    'https://www.huobi.com/en-us/opend/newApiPages/',
+                ],
+                'fees': 'https://www.huobi.com/about/fee/',
+            },
+            'api': {
+                // ------------------------------------------------------------
+                // old api definitions
+                'v2Public': {
+                    'get': {
+                        'reference/currencies': 1, // 币链参考信息
+                        'market-status': 1, // 获取当前市场状态
+                    },
+                },
+                'v2Private': {
+                    'get': {
+                        'account/ledger': 1,
+                        'account/withdraw/quota': 1,
+                        'account/withdraw/address': 1, // 提币地址查询(限母用户可用)
+                        'account/deposit/address': 1,
+                        'account/repayment': 5, // 还币交易记录查询
+                        'reference/transact-fee-rate': 1,
+                        'account/asset-valuation': 0.2, // 获取账户资产估值
+                        'point/account': 5, // 点卡余额查询
+                        'sub-user/user-list': 1, // 获取子用户列表
+                        'sub-user/user-state': 1, // 获取特定子用户的用户状态
+                        'sub-user/account-list': 1, // 获取特定子用户的账户列表
+                        'sub-user/deposit-address': 1, // 子用户充币地址查询
+                        'sub-user/query-deposit': 1, // 子用户充币记录查询
+                        'user/api-key': 1, // 母子用户API key信息查询
+                        'user/uid': 1, // 母子用户获取用户UID
+                        'algo-orders/opening': 1, // 查询未触发OPEN策略委托
+                        'algo-orders/history': 1, // 查询策略委托历史
+                        'algo-orders/specific': 1, // 查询特定策略委托
+                        'c2c/offers': 1, // 查询借入借出订单
+                        'c2c/offer': 1, // 查询特定借入借出订单及其交易记录
+                        'c2c/transactions': 1, // 查询借入借出交易记录
+                        'c2c/repayment': 1, // 查询还币交易记录
+                        'c2c/account': 1, // 查询账户余额
+                        'etp/reference': 1, // 基础参考信息
+                        'etp/transactions': 5, // 获取杠杆ETP申赎记录
+                        'etp/transaction': 5, // 获取特定杠杆ETP申赎记录
+                        'etp/rebalance': 1, // 获取杠杆ETP调仓记录
+                        'etp/limit': 1, // 获取ETP持仓限额
+                    },
+                    'post': {
+                        'account/transfer': 1,
+                        'account/repayment': 5, // 归还借币（全仓逐仓通用）
+                        'point/transfer': 5, // 点卡划转
+                        'sub-user/management': 1, // 冻结/解冻子用户
+                        'sub-user/creation': 1, // 子用户创建
+                        'sub-user/tradable-market': 1, // 设置子用户交易权限
+                        'sub-user/transferability': 1, // 设置子用户资产转出权限
+                        'sub-user/api-key-generation': 1, // 子用户API key创建
+                        'sub-user/api-key-modification': 1, // 修改子用户API key
+                        'sub-user/api-key-deletion': 1, // 删除子用户API key
+                        'sub-user/deduct-mode': 1, // 设置子用户手续费抵扣模式
+                        'algo-orders': 1, // 策略委托下单
+                        'algo-orders/cancel-all-after': 1, // 自动撤销订单
+                        'algo-orders/cancellation': 1, // 策略委托（触发前）撤单
+                        'c2c/offer': 1, // 借入借出下单
+                        'c2c/cancellation': 1, // 借入借出撤单
+                        'c2c/cancel-all': 1, // 撤销所有借入借出订单
+                        'c2c/repayment': 1, // 还币
+                        'c2c/transfer': 1, // 资产划转
+                        'etp/creation': 5, // 杠杆ETP换入
+                        'etp/redemption': 5, // 杠杆ETP换出
+                        'etp/{transactId}/cancel': 10, // 杠杆ETP单个撤单
+                        'etp/batch-cancel': 50, // 杠杆ETP批量撤单
+                    },
+                },
+                'public': {
+                    'get': {
+                        'common/symbols': 1, // 查询系统支持的所有交易对
+                        'common/currencys': 1, // 查询系统支持的所有币种
+                        'common/timestamp': 1, // 查询系统当前时间
+                        'common/exchange': 1, // order limits
+                        'settings/currencys': 1, // ?language=en-US
+                    },
+                },
+                'private': {
+                    'get': {
+                        'account/accounts': 0.2, // 查询当前用户的所有账户(即account-id)
+                        'account/accounts/{id}/balance': 0.2, // 查询指定账户的余额
+                        'account/accounts/{sub-uid}': 1,
+                        'account/history': 4,
+                        'cross-margin/loan-info': 1,
+                        'margin/loan-info': 1, // 查询借币币息率及额度
+                        'fee/fee-rate/get': 1,
+                        'order/openOrders': 0.4,
+                        'order/orders': 0.4,
+                        'order/orders/{id}': 0.4, // 查询某个订单详情
+                        'order/orders/{id}/matchresults': 0.4, // 查询某个订单的成交明细
+                        'order/orders/getClientOrder': 0.4,
+                        'order/history': 1, // 查询当前委托、历史委托
+                        'order/matchresults': 1, // 查询当前成交、历史成交
+                        // 'dw/withdraw-virtual/addresses', // 查询虚拟币提现地址（Deprecated）
+                        'query/deposit-withdraw': 1,
+                        // 'margin/loan-info', // duplicate
+                        'margin/loan-orders': 0.2, // 借贷订单
+                        'margin/accounts/balance': 0.2, // 借贷账户详情
+                        'cross-margin/loan-orders': 1, // 查询借币订单
+                        'cross-margin/accounts/balance': 1, // 借币账户详情
+                        'points/actions': 1,
+                        'points/orders': 1,
+                        'subuser/aggregate-balance': 10,
+                        'stable-coin/exchange_rate': 1,
+                        'stable-coin/quote': 1,
+                    },
+                    'post': {
+                        'account/transfer': 1, // 资产划转(该节点为母用户和子用户进行资产划转的通用接口。)
+                        'futures/transfer': 1,
+                        'order/batch-orders': 0.4,
+                        'order/orders/place': 0.2, // 创建并执行一个新订单 (一步下单， 推荐使用)
+                        'order/orders/submitCancelClientOrder': 0.2,
+                        'order/orders/batchCancelOpenOrders': 0.4,
+                        // 'order/orders', // 创建一个新的订单请求 （仅创建订单，不执行下单）
+                        // 'order/orders/{id}/place', // 执行一个订单 （仅执行已创建的订单）
+                        'order/orders/{id}/submitcancel': 0.2, // 申请撤销一个订单请求
+                        'order/orders/batchcancel': 0.4, // 批量撤销订单
+                        // 'dw/balance/transfer', // 资产划转
+                        'dw/withdraw/api/create': 1, // 申请提现虚拟币
+                        // 'dw/withdraw-virtual/create', // 申请提现虚拟币
+                        // 'dw/withdraw-virtual/{id}/place', // 确认申请虚拟币提现（Deprecated）
+                        'dw/withdraw-virtual/{id}/cancel': 1, // 申请取消提现虚拟币
+                        'dw/transfer-in/margin': 10, // 现货账户划入至借贷账户
+                        'dw/transfer-out/margin': 10, // 借贷账户划出至现货账户
+                        'margin/orders': 10, // 申请借贷
+                        'margin/orders/{id}/repay': 10, // 归还借贷
+                        'cross-margin/transfer-in': 1, // 资产划转
+                        'cross-margin/transfer-out': 1, // 资产划转
+                        'cross-margin/orders': 1, // 申请借币
+                        'cross-margin/orders/{id}/repay': 1, // 归还借币
+                        'stable-coin/exchange': 1,
+                        'subuser/transfer': 10,
+                    },
+                },
+                // ------------------------------------------------------------
+                // new api definitions
+                // 'https://status.huobigroup.com/api/v2/summary.json': 1,
+                // 'https://status-dm.huobigroup.com/api/v2/summary.json': 1,
+                // 'https://status-swap.huobigroup.com/api/v2/summary.json': 1,
+                // 'https://status-linear-swap.huobigroup.com/api/v2/summary.json': 1,
+                'status': {
+                    'public': {
+                        'spot': {
+                            'get': {
+                                'api/v2/summary.json': 1,
+                            },
+                        },
+                        'future': {
+                            'inverse': {
+                                'get': {
+                                    'api/v2/summary.json': 1,
+                                },
+                            },
+                            'linear': {
+                                'get': {
+                                    'api/v2/summary.json': 1,
+                                },
+                            },
+                        },
+                        'swap': {
+                            'inverse': {
+                                'get': {
+                                    'api/v2/summary.json': 1,
+                                },
+                            },
+                            'linear': {
+                                'get': {
+                                    'api/v2/summary.json': 1,
+                                },
+                            },
+                        },
+                    },
+                },
+                'spot': {
+                    'public': {
+                        'get': {
+                            'v2/market-status': 1,
+                            'v1/common/symbols': 1,
+                            'v1/common/currencys': 1,
+                            'v2/settings/common/currencies': 1,
+                            'v2/reference/currencies': 1,
+                            'v1/common/timestamp': 1,
+                            'v1/common/exchange': 1, // order limits
+                            'v1/settings/common/chains': 1,
+                            'v1/settings/common/currencys': 1,
+                            'v1/settings/common/symbols': 1,
+                            'v2/settings/common/symbols': 1,
+                            'v1/settings/common/market-symbols': 1,
+                            // Market Data
+                            'market/history/candles': 1,
+                            'market/history/kline': 1,
+                            'market/detail/merged': 1,
+                            'market/tickers': 1,
+                            'market/detail': 1,
+                            'market/depth': 1,
+                            'market/trade': 1,
+                            'market/history/trade': 1,
+                            'market/etp': 1, // Get real-time equity of leveraged ETP
+                            // ETP
+                            'v2/etp/reference': 1,
+                            'v2/etp/rebalance': 1,
+                        },
+                    },
+                    'private': {
+                        'get': {
+                            // Account
+                            'v1/account/accounts': 0.2,
+                            'v1/account/accounts/{account-id}/balance': 0.2,
+                            'v2/account/valuation': 1,
+                            'v2/account/asset-valuation': 0.2,
+                            'v1/account/history': 4,
+                            'v2/account/ledger': 1,
+                            'v2/point/account': 5,
+                            // Wallet (Deposit and Withdraw)
+                            'v2/account/deposit/address': 1,
+                            'v2/account/withdraw/quota': 1,
+                            'v2/account/withdraw/address': 1,
+                            'v2/reference/currencies': 1,
+                            'v1/query/deposit-withdraw': 1,
+                            'v1/query/withdraw/client-order-id': 1,
+                            // Sub user management
+                            'v2/user/api-key': 1,
+                            'v2/user/uid': 1,
+                            'v2/sub-user/user-list': 1,
+                            'v2/sub-user/user-state': 1,
+                            'v2/sub-user/account-list': 1,
+                            'v2/sub-user/deposit-address': 1,
+                            'v2/sub-user/query-deposit': 1,
+                            'v1/subuser/aggregate-balance': 10,
+                            'v1/account/accounts/{sub-uid}': 1,
+                            // Trading
+                            'v1/order/openOrders': 0.4,
+                            'v1/order/orders/{order-id}': 0.4,
+                            'v1/order/orders/getClientOrder': 0.4,
+                            'v1/order/orders/{order-id}/matchresult': 0.4,
+                            'v1/order/orders/{order-id}/matchresults': 0.4,
+                            'v1/order/orders': 0.4,
+                            'v1/order/history': 1,
+                            'v1/order/matchresults': 1,
+                            'v2/reference/transact-fee-rate': 1,
+                            // Conditional Order
+                            'v2/algo-orders/opening': 1,
+                            'v2/algo-orders/history': 1,
+                            'v2/algo-orders/specific': 1,
+                            // Margin Loan (Cross/Isolated)
+                            'v1/margin/loan-info': 1,
+                            'v1/margin/loan-orders': 0.2,
+                            'v1/margin/accounts/balance': 0.2,
+                            'v1/cross-margin/loan-info': 1,
+                            'v1/cross-margin/loan-orders': 1,
+                            'v1/cross-margin/accounts/balance': 1,
+                            'v2/account/repayment': 5,
+                            // Stable Coin Exchange
+                            'v1/stable-coin/quote': 1,
+                            'v1/stable_coin/exchange_rate': 1,
+                            // ETP
+                            'v2/etp/transactions': 5,
+                            'v2/etp/transaction': 5,
+                            'v2/etp/limit': 1,
+                        },
+                        'post': {
+                            // Account
+                            'v1/account/transfer': 1,
+                            'v1/futures/transfer': 1, // future transfers
+                            'v2/point/transfer': 5,
+                            'v2/account/transfer': 1, // swap transfers
+                            // Wallet (Deposit and Withdraw)
+                            'v1/dw/withdraw/api/create': 1,
+                            'v1/dw/withdraw-virtual/{withdraw-id}/cancel': 1,
+                            // Sub user management
+                            'v2/sub-user/deduct-mode': 1,
+                            'v2/sub-user/creation': 1,
+                            'v2/sub-user/management': 1,
+                            'v2/sub-user/tradable-market': 1,
+                            'v2/sub-user/transferability': 1,
+                            'v2/sub-user/api-key-generation': 1,
+                            'v2/sub-user/api-key-modification': 1,
+                            'v2/sub-user/api-key-deletion': 1,
+                            'v1/subuser/transfer': 10,
+                            // Trading
+                            'v1/order/orders/place': 0.2,
+                            'v1/order/batch-orders': 0.4,
+                            'v1/order/auto/place': 0.2,
+                            'v1/order/orders/{order-id}/submitcancel': 0.2,
+                            'v1/order/orders/submitCancelClientOrder': 0.2,
+                            'v1/order/orders/batchCancelOpenOrders': 0.4,
+                            'v1/order/orders/batchcancel': 0.4,
+                            'v2/algo-orders/cancel-all-after': 1,
+                            // Conditional Order
+                            'v2/algo-orders': 1,
+                            'v2/algo-orders/cancellation': 1,
+                            // Margin Loan (Cross/Isolated)
+                            'v2/account/repayment': 5,
+                            'v1/dw/transfer-in/margin': 10,
+                            'v1/dw/transfer-out/margin': 10,
+                            'v1/margin/orders': 10,
+                            'v1/margin/orders/{order-id}/repay': 10,
+                            'v1/cross-margin/transfer-in': 1,
+                            'v1/cross-margin/transfer-out': 1,
+                            'v1/cross-margin/orders': 1,
+                            'v1/cross-margin/orders/{order-id}/repay': 1,
+                            // Stable Coin Exchange
+                            'v1/stable-coin/exchange': 1,
+                            // ETP
+                            'v2/etp/creation': 5,
+                            'v2/etp/redemption': 5,
+                            'v2/etp/{transactId}/cancel': 10,
+                            'v2/etp/batch-cancel': 50,
+                        },
+                    },
+                },
+                'contract': {
+                    'public': {
+                        'get': {
+                            'api/v1/timestamp': 1,
+                            'heartbeat/': 1, // backslash is not a typo
+                            // Future Market Data interface
+                            'api/v1/contract_contract_info': 1,
+                            'api/v1/contract_index': 1,
+                            'api/v1/contract_price_limit': 1,
+                            'api/v1/contract_open_interest': 1,
+                            'api/v1/contract_delivery_price': 1,
+                            'market/depth': 1,
+                            'market/bbo': 1,
+                            'market/history/kline': 1,
+                            'index/market/history/mark_price_kline': 1,
+                            'market/detail/merged': 1,
+                            'market/detail/batch_merged': 1,
+                            'v2/market/detail/batch_merged': 1,
+                            'market/trade': 1,
+                            'market/history/trade': 1,
+                            'api/v1/contract_risk_info': 1,
+                            'api/v1/contract_insurance_fund': 1,
+                            'api/v1/contract_adjustfactor': 1,
+                            'api/v1/contract_his_open_interest': 1,
+                            'api/v1/contract_ladder_margin': 1,
+                            'api/v1/contract_api_state': 1,
+                            'api/v1/contract_elite_account_ratio': 1,
+                            'api/v1/contract_elite_position_ratio': 1,
+                            'api/v1/contract_liquidation_orders': 1,
+                            'api/v1/contract_settlement_records': 1,
+                            'index/market/history/index': 1,
+                            'index/market/history/basis': 1,
+                            'api/v1/contract_estimated_settlement_price': 1,
+                            'api/v3/contract_liquidation_orders': 1,
+                            // Swap Market Data interface
+                            'swap-api/v1/swap_contract_info': 1,
+                            'swap-api/v1/swap_index': 1,
+                            'swap-api/v1/swap_price_limit': 1,
+                            'swap-api/v1/swap_open_interest': 1,
+                            'swap-ex/market/depth': 1,
+                            'swap-ex/market/bbo': 1,
+                            'swap-ex/market/history/kline': 1,
+                            'index/market/history/swap_mark_price_kline': 1,
+                            'swap-ex/market/detail/merged': 1,
+                            'v2/swap-ex/market/detail/batch_merged': 1,
+                            'index/market/history/swap_premium_index_kline': 1,
+                            'swap-ex/market/detail/batch_merged': 1,
+                            'swap-ex/market/trade': 1,
+                            'swap-ex/market/history/trade': 1,
+                            'swap-api/v1/swap_risk_info': 1,
+                            'swap-api/v1/swap_insurance_fund': 1,
+                            'swap-api/v1/swap_adjustfactor': 1,
+                            'swap-api/v1/swap_his_open_interest': 1,
+                            'swap-api/v1/swap_ladder_margin': 1,
+                            'swap-api/v1/swap_api_state': 1,
+                            'swap-api/v1/swap_elite_account_ratio': 1,
+                            'swap-api/v1/swap_elite_position_ratio': 1,
+                            'swap-api/v1/swap_estimated_settlement_price': 1,
+                            'swap-api/v1/swap_liquidation_orders': 1,
+                            'swap-api/v1/swap_settlement_records': 1,
+                            'swap-api/v1/swap_funding_rate': 1,
+                            'swap-api/v1/swap_batch_funding_rate': 1,
+                            'swap-api/v1/swap_historical_funding_rate': 1,
+                            'swap-api/v3/swap_liquidation_orders': 1,
+                            'index/market/history/swap_estimated_rate_kline': 1,
+                            'index/market/history/swap_basis': 1,
+                            // Swap Market Data interface
+                            'linear-swap-api/v1/swap_contract_info': 1,
+                            'linear-swap-api/v1/swap_index': 1,
+                            'linear-swap-api/v1/swap_price_limit': 1,
+                            'linear-swap-api/v1/swap_open_interest': 1,
+                            'linear-swap-ex/market/depth': 1,
+                            'linear-swap-ex/market/bbo': 1,
+                            'linear-swap-ex/market/history/kline': 1,
+                            'index/market/history/linear_swap_mark_price_kline': 1,
+                            'linear-swap-ex/market/detail/merged': 1,
+                            'linear-swap-ex/market/detail/batch_merged': 1,
+                            'v2/linear-swap-ex/market/detail/batch_merged': 1,
+                            'linear-swap-ex/market/trade': 1,
+                            'linear-swap-ex/market/history/trade': 1,
+                            'linear-swap-api/v1/swap_risk_info': 1,
+                            'swap-api/v1/linear-swap-api/v1/swap_insurance_fund': 1,
+                            'linear-swap-api/v1/swap_adjustfactor': 1,
+                            'linear-swap-api/v1/swap_cross_adjustfactor': 1,
+                            'linear-swap-api/v1/swap_his_open_interest': 1,
+                            'linear-swap-api/v1/swap_ladder_margin': 1,
+                            'linear-swap-api/v1/swap_cross_ladder_margin': 1,
+                            'linear-swap-api/v1/swap_api_state': 1,
+                            'linear-swap-api/v1/swap_cross_transfer_state': 1,
+                            'linear-swap-api/v1/swap_cross_trade_state': 1,
+                            'linear-swap-api/v1/swap_elite_account_ratio': 1,
+                            'linear-swap-api/v1/swap_elite_position_ratio': 1,
+                            'linear-swap-api/v1/swap_liquidation_orders': 1,
+                            'linear-swap-api/v1/swap_settlement_records': 1,
+                            'linear-swap-api/v1/swap_funding_rate': 1,
+                            'linear-swap-api/v1/swap_batch_funding_rate': 1,
+                            'linear-swap-api/v1/swap_historical_funding_rate': 1,
+                            'linear-swap-api/v3/swap_liquidation_orders': 1,
+                            'index/market/history/linear_swap_premium_index_kline': 1,
+                            'index/market/history/linear_swap_estimated_rate_kline': 1,
+                            'index/market/history/linear_swap_basis': 1,
+                            'linear-swap-api/v1/swap_estimated_settlement_price': 1,
+                        },
+                    },
+                    'private': {
+                        'get': {
+                            // Future Account Interface
+                            'api/v1/contract_api_trading_status': 1,
+                            // Swap Account Interface
+                            'swap-api/v1/swap_api_trading_status': 1,
+                            // Swap Account Interface
+                            'linear-swap-api/v1/swap_api_trading_status': 1,
+                            'linear-swap-api/v1/swap_cross_position_side': 1,
+                            'linear-swap-api/v1/swap_position_side': 1,
+                            'linear-swap-api/v3/unified_account_info': 1,
+                            'linear-swap-api/v3/fix_position_margin_change_record': 1,
+                            'linear-swap-api/v3/swap_unified_account_type': 1,
+                            'linear-swap-api/v3/linear_swap_overview_account_info': 1,
+                        },
+                        'post': {
+                            // Future Account Interface
+                            'api/v1/contract_balance_valuation': 1,
+                            'api/v1/contract_account_info': 1,
+                            'api/v1/contract_position_info': 1,
+                            'api/v1/contract_sub_auth': 1,
+                            'api/v1/contract_sub_account_list': 1,
+                            'api/v1/contract_sub_account_info_list': 1,
+                            'api/v1/contract_sub_account_info': 1,
+                            'api/v1/contract_sub_position_info': 1,
+                            'api/v1/contract_financial_record': 1,
+                            'api/v1/contract_financial_record_exact': 1,
+                            'api/v1/contract_user_settlement_records': 1,
+                            'api/v1/contract_order_limit': 1,
+                            'api/v1/contract_fee': 1,
+                            'api/v1/contract_transfer_limit': 1,
+                            'api/v1/contract_position_limit': 1,
+                            'api/v1/contract_account_position_info': 1,
+                            'api/v1/contract_master_sub_transfer': 1,
+                            'api/v1/contract_master_sub_transfer_record': 1,
+                            'api/v1/contract_available_level_rate': 1,
+                            'api/v3/contract_financial_record': 1,
+                            'api/v3/contract_financial_record_exact': 1,
+                            // Future Trade Interface
+                            'api/v1/contract-cancel-after': 1,
+                            'api/v1/contract_order': 1,
+                            'v1/contract_batchorder': 1,
+                            'api/v1/contract_cancel': 1,
+                            'api/v1/contract_cancelall': 1,
+                            'api/v1/contract_switch_lever_rate': 1,
+                            'api/v1/lightning_close_position': 1,
+                            'api/v1/contract_order_info': 1,
+                            'api/v1/contract_order_detail': 1,
+                            'api/v1/contract_openorders': 1,
+                            'api/v1/contract_hisorders': 1,
+                            'api/v1/contract_hisorders_exact': 1,
+                            'api/v1/contract_matchresults': 1,
+                            'api/v1/contract_matchresults_exact': 1,
+                            'api/v3/contract_hisorders': 1,
+                            'api/v3/contract_hisorders_exact': 1,
+                            'api/v3/contract_matchresults': 1,
+                            'api/v3/contract_matchresults_exact': 1,
+                            // Contract Strategy Order Interface
+                            'api/v1/contract_trigger_order': 1,
+                            'api/v1/contract_trigger_cancel': 1,
+                            'api/v1/contract_trigger_cancelall': 1,
+                            'api/v1/contract_trigger_openorders': 1,
+                            'api/v1/contract_trigger_hisorders': 1,
+                            'api/v1/contract_tpsl_order': 1,
+                            'api/v1/contract_tpsl_cancel': 1,
+                            'api/v1/contract_tpsl_cancelall': 1,
+                            'api/v1/contract_tpsl_openorders': 1,
+                            'api/v1/contract_tpsl_hisorders': 1,
+                            'api/v1/contract_relation_tpsl_order': 1,
+                            'api/v1/contract_track_order': 1,
+                            'api/v1/contract_track_cancel': 1,
+                            'api/v1/contract_track_cancelall': 1,
+                            'api/v1/contract_track_openorders': 1,
+                            'api/v1/contract_track_hisorders': 1,
+                            // Swap Account Interface
+                            'swap-api/v1/swap_balance_valuation': 1,
+                            'swap-api/v1/swap_account_info': 1,
+                            'swap-api/v1/swap_position_info': 1,
+                            'swap-api/v1/swap_account_position_info': 1,
+                            'swap-api/v1/swap_sub_auth': 1,
+                            'swap-api/v1/swap_sub_account_list': 1,
+                            'swap-api/v1/swap_sub_account_info_list': 1,
+                            'swap-api/v1/swap_sub_account_info': 1,
+                            'swap-api/v1/swap_sub_position_info': 1,
+                            'swap-api/v1/swap_financial_record': 1,
+                            'swap-api/v1/swap_financial_record_exact': 1,
+                            'swap-api/v1/swap_user_settlement_records': 1,
+                            'swap-api/v1/swap_available_level_rate': 1,
+                            'swap-api/v1/swap_order_limit': 1,
+                            'swap-api/v1/swap_fee': 1,
+                            'swap-api/v1/swap_transfer_limit': 1,
+                            'swap-api/v1/swap_position_limit': 1,
+                            'swap-api/v1/swap_master_sub_transfer': 1,
+                            'swap-api/v1/swap_master_sub_transfer_record': 1,
+                            'swap-api/v3/swap_financial_record': 1,
+                            'swap-api/v3/swap_financial_record_exact': 1,
+                            // Swap Trade Interface
+                            'swap-api/v1/swap-cancel-after': 1,
+                            'swap-api/v1/swap_order': 1,
+                            'swap-api/v1/swap_batchorder': 1,
+                            'swap-api/v1/swap_cancel': 1,
+                            'swap-api/v1/swap_cancelall': 1,
+                            'swap-api/v1/swap_lightning_close_position': 1,
+                            'swap-api/v1/swap_switch_lever_rate': 1,
+                            'swap-api/v1/swap_order_info': 1,
+                            'swap-api/v1/swap_order_detail': 1,
+                            'swap-api/v1/swap_openorders': 1,
+                            'swap-api/v1/swap_hisorders': 1,
+                            'swap-api/v1/swap_hisorders_exact': 1,
+                            'swap-api/v1/swap_matchresults': 1,
+                            'swap-api/v1/swap_matchresults_exact': 1,
+                            'swap-api/v3/swap_matchresults': 1,
+                            'swap-api/v3/swap_matchresults_exact': 1,
+                            'swap-api/v3/swap_hisorders': 1,
+                            'swap-api/v3/swap_hisorders_exact': 1,
+                            // Swap Strategy Order Interface
+                            'swap-api/v1/swap_trigger_order': 1,
+                            'swap-api/v1/swap_trigger_cancel': 1,
+                            'swap-api/v1/swap_trigger_cancelall': 1,
+                            'swap-api/v1/swap_trigger_openorders': 1,
+                            'swap-api/v1/swap_trigger_hisorders': 1,
+                            'swap-api/v1/swap_tpsl_order': 1,
+                            'swap-api/v1/swap_tpsl_cancel': 1,
+                            'swap-api/v1/swap_tpsl_cancelall': 1,
+                            'swap-api/v1/swap_tpsl_openorders': 1,
+                            'swap-api/v1/swap_tpsl_hisorders': 1,
+                            'swap-api/v1/swap_relation_tpsl_order': 1,
+                            'swap-api/v1/swap_track_order': 1,
+                            'swap-api/v1/swap_track_cancel': 1,
+                            'swap-api/v1/swap_track_cancelall': 1,
+                            'swap-api/v1/swap_track_openorders': 1,
+                            'swap-api/v1/swap_track_hisorders': 1,
+                            // Swap Account Interface
+                            'linear-swap-api/v1/swap_lever_position_limit': 1,
+                            'linear-swap-api/v1/swap_cross_lever_position_limit': 1,
+                            'linear-swap-api/v1/swap_balance_valuation': 1,
+                            'linear-swap-api/v1/swap_account_info': 1,
+                            'linear-swap-api/v1/swap_cross_account_info': 1,
+                            'linear-swap-api/v1/swap_position_info': 1,
+                            'linear-swap-api/v1/swap_cross_position_info': 1,
+                            'linear-swap-api/v1/swap_account_position_info': 1,
+                            'linear-swap-api/v1/swap_cross_account_position_info': 1,
+                            'linear-swap-api/v1/swap_sub_auth': 1,
+                            'linear-swap-api/v1/swap_sub_account_list': 1,
+                            'linear-swap-api/v1/swap_cross_sub_account_list': 1,
+                            'linear-swap-api/v1/swap_sub_account_info_list': 1,
+                            'linear-swap-api/v1/swap_cross_sub_account_info_list': 1,
+                            'linear-swap-api/v1/swap_sub_account_info': 1,
+                            'linear-swap-api/v1/swap_cross_sub_account_info': 1,
+                            'linear-swap-api/v1/swap_sub_position_info': 1,
+                            'linear-swap-api/v1/swap_cross_sub_position_info': 1,
+                            'linear-swap-api/v1/swap_financial_record': 1,
+                            'linear-swap-api/v1/swap_financial_record_exact': 1,
+                            'linear-swap-api/v1/swap_user_settlement_records': 1,
+                            'linear-swap-api/v1/swap_cross_user_settlement_records': 1,
+                            'linear-swap-api/v1/swap_available_level_rate': 1,
+                            'linear-swap-api/v1/swap_cross_available_level_rate': 1,
+                            'linear-swap-api/v1/swap_order_limit': 1,
+                            'linear-swap-api/v1/swap_fee': 1,
+                            'linear-swap-api/v1/swap_transfer_limit': 1,
+                            'linear-swap-api/v1/swap_cross_transfer_limit': 1,
+                            'linear-swap-api/v1/swap_position_limit': 1,
+                            'linear-swap-api/v1/swap_cross_position_limit': 1,
+                            'linear-swap-api/v1/swap_master_sub_transfer': 1,
+                            'linear-swap-api/v1/swap_master_sub_transfer_record': 1,
+                            'linear-swap-api/v1/swap_transfer_inner': 1,
+                            'linear-swap-api/v3/swap_financial_record': 1,
+                            'linear-swap-api/v3/swap_financial_record_exact': 1,
+                            // Swap Trade Interface
+                            'linear-swap-api/v1/swap_order': 1,
+                            'linear-swap-api/v1/swap_cross_order': 1,
+                            'linear-swap-api/v1/swap_batchorder': 1,
+                            'linear-swap-api/v1/swap_cross_batchorder': 1,
+                            'linear-swap-api/v1/swap_cancel': 1,
+                            'linear-swap-api/v1/swap_cross_cancel': 1,
+                            'linear-swap-api/v1/swap_cancelall': 1,
+                            'linear-swap-api/v1/swap_cross_cancelall': 1,
+                            'linear-swap-api/v1/swap_switch_lever_rate': 1,
+                            'linear-swap-api/v1/swap_cross_switch_lever_rate': 1,
+                            'linear-swap-api/v1/swap_lightning_close_position': 1,
+                            'linear-swap-api/v1/swap_cross_lightning_close_position': 1,
+                            'linear-swap-api/v1/swap_order_info': 1,
+                            'linear-swap-api/v1/swap_cross_order_info': 1,
+                            'linear-swap-api/v1/swap_order_detail': 1,
+                            'linear-swap-api/v1/swap_cross_order_detail': 1,
+                            'linear-swap-api/v1/swap_openorders': 1,
+                            'linear-swap-api/v1/swap_cross_openorders': 1,
+                            'linear-swap-api/v1/swap_hisorders': 1,
+                            'linear-swap-api/v1/swap_cross_hisorders': 1,
+                            'linear-swap-api/v1/swap_hisorders_exact': 1,
+                            'linear-swap-api/v1/swap_cross_hisorders_exact': 1,
+                            'linear-swap-api/v1/swap_matchresults': 1,
+                            'linear-swap-api/v1/swap_cross_matchresults': 1,
+                            'linear-swap-api/v1/swap_matchresults_exact': 1,
+                            'linear-swap-api/v1/swap_cross_matchresults_exact': 1,
+                            'linear-swap-api/v1/linear-cancel-after': 1,
+                            'linear-swap-api/v1/swap_switch_position_mode': 1,
+                            'linear-swap-api/v1/swap_cross_switch_position_mode': 1,
+                            'linear-swap-api/v3/swap_matchresults': 1,
+                            'linear-swap-api/v3/swap_cross_matchresults': 1,
+                            'linear-swap-api/v3/swap_matchresults_exact': 1,
+                            'linear-swap-api/v3/swap_cross_matchresults_exact': 1,
+                            'linear-swap-api/v3/swap_hisorders': 1,
+                            'linear-swap-api/v3/swap_cross_hisorders': 1,
+                            'linear-swap-api/v3/swap_hisorders_exact': 1,
+                            'linear-swap-api/v3/swap_cross_hisorders_exact': 1,
+                            'linear-swap-api/v3/fix_position_margin_change': 1,
+                            'linear-swap-api/v3/swap_switch_account_type': 1,
+                            'linear-swap-api/v3/linear_swap_fee_switch': 1,
+                            // Swap Strategy Order Interface
+                            'linear-swap-api/v1/swap_trigger_order': 1,
+                            'linear-swap-api/v1/swap_cross_trigger_order': 1,
+                            'linear-swap-api/v1/swap_trigger_cancel': 1,
+                            'linear-swap-api/v1/swap_cross_trigger_cancel': 1,
+                            'linear-swap-api/v1/swap_trigger_cancelall': 1,
+                            'linear-swap-api/v1/swap_cross_trigger_cancelall': 1,
+                            'linear-swap-api/v1/swap_trigger_openorders': 1,
+                            'linear-swap-api/v1/swap_cross_trigger_openorders': 1,
+                            'linear-swap-api/v1/swap_trigger_hisorders': 1,
+                            'linear-swap-api/v1/swap_cross_trigger_hisorders': 1,
+                            'linear-swap-api/v1/swap_tpsl_order': 1,
+                            'linear-swap-api/v1/swap_cross_tpsl_order': 1,
+                            'linear-swap-api/v1/swap_tpsl_cancel': 1,
+                            'linear-swap-api/v1/swap_cross_tpsl_cancel': 1,
+                            'linear-swap-api/v1/swap_tpsl_cancelall': 1,
+                            'linear-swap-api/v1/swap_cross_tpsl_cancelall': 1,
+                            'linear-swap-api/v1/swap_tpsl_openorders': 1,
+                            'linear-swap-api/v1/swap_cross_tpsl_openorders': 1,
+                            'linear-swap-api/v1/swap_tpsl_hisorders': 1,
+                            'linear-swap-api/v1/swap_cross_tpsl_hisorders': 1,
+                            'linear-swap-api/v1/swap_relation_tpsl_order': 1,
+                            'linear-swap-api/v1/swap_cross_relation_tpsl_order': 1,
+                            'linear-swap-api/v1/swap_track_order': 1,
+                            'linear-swap-api/v1/swap_cross_track_order': 1,
+                            'linear-swap-api/v1/swap_track_cancel': 1,
+                            'linear-swap-api/v1/swap_cross_track_cancel': 1,
+                            'linear-swap-api/v1/swap_track_cancelall': 1,
+                            'linear-swap-api/v1/swap_cross_track_cancelall': 1,
+                            'linear-swap-api/v1/swap_track_openorders': 1,
+                            'linear-swap-api/v1/swap_cross_track_openorders': 1,
+                            'linear-swap-api/v1/swap_track_hisorders': 1,
+                            'linear-swap-api/v1/swap_cross_track_hisorders': 1,
+                        },
+                    },
+                },
+            },
+            'fees': {
+                'trading': {
+                    'feeSide': 'get',
+                    'tierBased': false,
+                    'percentage': true,
+                    'maker': this.parseNumber ('0.002'),
+                    'taker': this.parseNumber ('0.002'),
+                },
+            },
+            'exceptions': {
+                'broad': {
+                    'contract is restricted of closing positions on API.  Please contact customer service': OnMaintenance,
+                    'maintain': OnMaintenance,
+                    'API key has no permission': PermissionDenied, // {"status":"error","err-code":"api-signature-not-valid","err-msg":"Signature not valid: API key has no permission [API Key没有权限]","data":null}
+                },
+                'exact': {
+                    // err-code
+                    '403': AuthenticationError,  // {"status":"error","err_code":403,"err_msg":"Incorrect Access key [Access key错误]","ts":1652774224344}
+                    '1010': AccountNotEnabled, // {"status":"error","err_code":1010,"err_msg":"Account doesnt exist.","ts":1648137970490}
+                    '1003': AuthenticationError, // {code: '1003', message: 'invalid signature'}
+                    '1013': BadSymbol, // {"status":"error","err_code":1013,"err_msg":"This contract symbol doesnt exist.","ts":1640550459583}
+                    '1017': OrderNotFound, // {"status":"error","err_code":1017,"err_msg":"Order doesnt exist.","ts":1640550859242}
+                    '1034': InvalidOrder, // {"status":"error","err_code":1034,"err_msg":"Incorrect field of order price type.","ts":1643802870182}
+                    '1036': InvalidOrder, // {"status":"error","err_code":1036,"err_msg":"Incorrect field of open long form.","ts":1643802518986}
+                    '1039': InvalidOrder, // {"status":"error","err_code":1039,"err_msg":"Buy price must be lower than 39270.9USDT. Sell price must exceed 37731USDT.","ts":1643802374403}
+                    '1041': InvalidOrder, // {"status":"error","err_code":1041,"err_msg":"The order amount exceeds the limit (170000Cont), please modify and order again.","ts":1643802784940}
+                    '1047': InsufficientFunds, // {"status":"error","err_code":1047,"err_msg":"Insufficient margin available.","ts":1643802672652}
+                    '1048': InsufficientFunds,  // {"status":"error","err_code":1048,"err_msg":"Insufficient close amount available.","ts":1652772408864}
+                    '1051': InvalidOrder, // {"status":"error","err_code":1051,"err_msg":"No orders to cancel.","ts":1652552125876}
+                    '1066': BadSymbol, // {"status":"error","err_code":1066,"err_msg":"The symbol field cannot be empty. Please re-enter.","ts":1640550819147}
+                    '1067': InvalidOrder, // {"status":"error","err_code":1067,"err_msg":"The client_order_id field is invalid. Please re-enter.","ts":1643802119413}
+                    '1094': InvalidOrder, // {"status":"error","err_code":1094,"err_msg":"The leverage cannot be empty, please switch the leverage or contact customer service","ts":1640496946243}
+                    '1220': AccountNotEnabled, // {"status":"error","err_code":1220,"err_msg":"You don’t have access permission as you have not opened contracts trading.","ts":1645096660718}
+                    '1303': BadRequest, // {"code":1303,"data":null,"message":"Each transfer-out cannot be less than 5USDT.","success":false,"print-log":true}
+                    '1461': InvalidOrder, // {"status":"error","err_code":1461,"err_msg":"Current positions have triggered position limits (5000USDT). Please modify.","ts":1652554651234}
+                    '4007': BadRequest, // {"code":"4007","msg":"Unified account special interface, non - one account is not available","data":null,"ts":"1698413427651"}'
+                    'bad-request': BadRequest,
+                    'validation-format-error': BadRequest, // {"status":"error","err-code":"validation-format-error","err-msg":"Format Error: order-id.","data":null}
+                    'validation-constraints-required': BadRequest, // {"status":"error","err-code":"validation-constraints-required","err-msg":"Field is missing: client-order-id.","data":null}
+                    'base-date-limit-error': BadRequest, // {"status":"error","err-code":"base-date-limit-error","err-msg":"date less than system limit","data":null}
+                    'api-not-support-temp-addr': PermissionDenied, // {"status":"error","err-code":"api-not-support-temp-addr","err-msg":"API withdrawal does not support temporary addresses","data":null}
+                    'timeout': RequestTimeout, // {"ts":1571653730865,"status":"error","err-code":"timeout","err-msg":"Request Timeout"}
+                    'gateway-internal-error': ExchangeNotAvailable, // {"status":"error","err-code":"gateway-internal-error","err-msg":"Failed to load data. Try again later.","data":null}
+                    'account-frozen-balance-insufficient-error': InsufficientFunds, // {"status":"error","err-code":"account-frozen-balance-insufficient-error","err-msg":"trade account balance is not enough, left: `0.0027`","data":null}
+                    'invalid-amount': InvalidOrder, // eg "Paramemter `amount` is invalid."
+                    'order-limitorder-amount-min-error': InvalidOrder, // limit order amount error, min: `0.001`
+                    'order-limitorder-amount-max-error': InvalidOrder, // market order amount error, max: `1000000`
+                    'order-marketorder-amount-min-error': InvalidOrder, // market order amount error, min: `0.01`
+                    'order-limitorder-price-min-error': InvalidOrder, // limit order price error
+                    'order-limitorder-price-max-error': InvalidOrder, // limit order price error
+                    'order-stop-order-hit-trigger': InvalidOrder, // {"status":"error","err-code":"order-stop-order-hit-trigger","err-msg":"Orders that are triggered immediately are not supported.","data":null}
+                    'order-value-min-error': InvalidOrder, // {"status":"error","err-code":"order-value-min-error","err-msg":"Order total cannot be lower than: 1 USDT","data":null}
+                    'order-invalid-price': InvalidOrder, // {"status":"error","err-code":"order-invalid-price","err-msg":"invalid price","data":null}
+                    'order-holding-limit-failed': InvalidOrder, // {"status":"error","err-code":"order-holding-limit-failed","err-msg":"Order failed, exceeded the holding limit of this currency","data":null}
+                    'order-orderprice-precision-error': InvalidOrder, // {"status":"error","err-code":"order-orderprice-precision-error","err-msg":"order price precision error, scale: `4`","data":null}
+                    'order-etp-nav-price-max-error': InvalidOrder, // {"status":"error","err-code":"order-etp-nav-price-max-error","err-msg":"Order price cannot be higher than 5% of NAV","data":null}
+                    'order-orderstate-error': OrderNotFound, // canceling an already canceled order
+                    'order-queryorder-invalid': OrderNotFound, // querying a non-existent order
+                    'order-update-error': ExchangeNotAvailable, // undocumented error
+                    'api-signature-check-failed': AuthenticationError,
+                    'api-signature-not-valid': AuthenticationError, // {"status":"error","err-code":"api-signature-not-valid","err-msg":"Signature not valid: Incorrect Access key [Access key错误]","data":null}
+                    'base-record-invalid': OrderNotFound, // https://github.com/ccxt/ccxt/issues/5750
+                    'base-symbol-trade-disabled': BadSymbol, // {"status":"error","err-code":"base-symbol-trade-disabled","err-msg":"Trading is disabled for this symbol","data":null}
+                    'base-symbol-error': BadSymbol, // {"status":"error","err-code":"base-symbol-error","err-msg":"The symbol is invalid","data":null}
+                    'system-maintenance': OnMaintenance, // {"status": "error", "err-code": "system-maintenance", "err-msg": "System is in maintenance!", "data": null}
+                    'base-request-exceed-frequency-limit': RateLimitExceeded, // {"status":"error","err-code":"base-request-exceed-frequency-limit","err-msg":"Frequency of requests has exceeded the limit, please try again later","data":null}
+                    // err-msg
+                    'invalid symbol': BadSymbol, // {"ts":1568813334794,"status":"error","err-code":"invalid-parameter","err-msg":"invalid symbol"}
+                    'symbol trade not open now': BadSymbol, // {"ts":1576210479343,"status":"error","err-code":"invalid-parameter","err-msg":"symbol trade not open now"}
+                    'require-symbol': BadSymbol, // {"status":"error","err-code":"require-symbol","err-msg":"Parameter `symbol` is required.","data":null},
+                    'invalid-address': BadRequest, // {"status":"error","err-code":"invalid-address","err-msg":"Invalid address.","data":null},
+                    'base-currency-chain-error': BadRequest, // {"status":"error","err-code":"base-currency-chain-error","err-msg":"The current currency chain does not exist","data":null},
+                    'dw-insufficient-balance': InsufficientFunds, // {"status":"error","err-code":"dw-insufficient-balance","err-msg":"Insufficient balance. You can only transfer `12.3456` at most.","data":null}
+                    'base-withdraw-fee-error': BadRequest, // {"status":"error","err-code":"base-withdraw-fee-error","err-msg":"withdrawal fee is not within limits","data":null}
+                    'dw-withdraw-min-limit': BadRequest, // {"status":"error","err-code":"dw-withdraw-min-limit","err-msg":"The withdrawal amount is less than the minimum limit.","data":null}
+                    'request limit': RateLimitExceeded, // {"ts":1687004814731,"status":"error","err-code":"invalid-parameter","err-msg":"request limit"}
+                },
+            },
+            'precisionMode': TICK_SIZE,
+            'options': {
+                'fetchMarkets': {
+                    'types': {
+                        'spot': true,
+                        'future': {
+                            'linear': true,
+                            'inverse': true,
+                        },
+                        'swap': {
+                            'linear': true,
+                            'inverse': true,
+                        },
+                    },
+                },
+                'withdraw': {
+                    'includeFee': false,
+                },
+                'defaultType': 'spot', // spot, future, swap
+                'defaultSubType': 'linear', // inverse, linear
+                'defaultNetwork': 'ERC20',
+                'defaultNetworks': {
+                    'ETH': 'ERC20',
+                    'BTC': 'BTC',
+                    'USDT': 'TRC20',
+                },
+                // https://github.com/ccxt/ccxt/issues/5376
+                'fetchOrdersByStatesMethod': 'spot_private_get_v1_order_orders', // 'spot_private_get_v1_order_history' // https://github.com/ccxt/ccxt/pull/5392
+                'createMarketBuyOrderRequiresPrice': true,
+                'language': 'en-US',
+                'broker': {
+                    'id': 'AA03022abc',
+                },
+                'accountsByType': {
+                    'spot': 'pro',
+                    'funding': 'pro',
+                    'future': 'futures',
+                },
+                'accountsById': {
+                    'spot': 'spot',
+                    'margin': 'margin',
+                    'otc': 'otc',
+                    'point': 'point',
+                    'super-margin': 'super-margin',
+                    'investment': 'investment',
+                    'borrow': 'borrow',
+                    'grid-trading': 'grid-trading',
+                    'deposit-earning': 'deposit-earning',
+                    'otc-options': 'otc-options',
+                },
+                'marginAccounts': {
+                    'cross': 'super-margin',
+                    'isolated': 'margin',
+                },
+                'typesByAccount': {
+                    'pro': 'spot',
+                    'futures': 'future',
+                },
+                'spot': {
+                    'stopOrderTypes': {
+                        'stop-limit': true,
+                        'buy-stop-limit': true,
+                        'sell-stop-limit': true,
+                        'stop-limit-fok': true,
+                        'buy-stop-limit-fok': true,
+                        'sell-stop-limit-fok': true,
+                    },
+                    'limitOrderTypes': {
+                        'limit': true,
+                        'buy-limit': true,
+                        'sell-limit': true,
+                        'ioc': true,
+                        'buy-ioc': true,
+                        'sell-ioc': true,
+                        'limit-maker': true,
+                        'buy-limit-maker': true,
+                        'sell-limit-maker': true,
+                        'stop-limit': true,
+                        'buy-stop-limit': true,
+                        'sell-stop-limit': true,
+                        'limit-fok': true,
+                        'buy-limit-fok': true,
+                        'sell-limit-fok': true,
+                        'stop-limit-fok': true,
+                        'buy-stop-limit-fok': true,
+                        'sell-stop-limit-fok': true,
+                    },
+                },
+            },
+            'commonCurrencies': {
+                // https://github.com/ccxt/ccxt/issues/6081
+                // https://github.com/ccxt/ccxt/issues/3365
+                // https://github.com/ccxt/ccxt/issues/2873
+                'GET': 'Themis', // conflict with GET (Guaranteed Entrance Token, GET Protocol)
+                'GTC': 'Game.com', // conflict with Gitcoin and Gastrocoin
+                'HIT': 'HitChain',
+                // https://github.com/ccxt/ccxt/issues/7399
+                // https://coinmarketcap.com/currencies/pnetwork/
+                // https://coinmarketcap.com/currencies/penta/markets/
+                // https://en.cryptonomist.ch/blog/eidoo/the-edo-to-pnt-upgrade-what-you-need-to-know-updated/
+                'PNT': 'Penta',
+                'SBTC': 'Super Bitcoin',
+                'SOUL': 'Soulsaver',
+                'BIFI': 'Bitcoin File', // conflict with Beefy.Finance https://github.com/ccxt/ccxt/issues/8706
+            },
+>>>>>>> a9370714bf (feat: store-1342 - fix duplicate network names)
         });
     }
 
@@ -1944,8 +2951,6 @@ export default class huobi extends htx {
                 const chainEntry = chains[j];
                 const uniqueChainId = this.safeString (chainEntry, 'chain'); // i.e. usdterc20, trc20usdt ...
                 const displayName = this.safeString (chainEntry, 'displayName');
-                // this.options['networkNamesByChainIds'][uniqueChainId] = title;
-                // const networkCode = this.networkIdToCode (title, code);
                 minWithdraw = this.safeNumber (chainEntry, 'minWithdrawAmt');
                 maxWithdraw = this.safeNumber (chainEntry, 'maxWithdrawAmt');
                 const withdrawStatus = this.safeString (chainEntry, 'withdrawStatus');
@@ -2014,17 +3019,6 @@ export default class huobi extends htx {
             };
         }
         return result;
-    }
-
-    networkIdToCode (networkId, currencyCode = undefined) {
-        // here network-id is provided as a pair of currency & chain (i.e. trc20usdt)
-        const keys = Object.keys (this.options['networkNamesByChainIds']);
-        const keysLength = keys.length;
-        if (keysLength === 0) {
-            throw new ExchangeError (this.id + ' networkIdToCode() - markets need to be loaded at first');
-        }
-        const networkTitle = this.safeValue (this.options['networkNamesByChainIds'], networkId, networkId);
-        return super.networkIdToCode (networkTitle);
     }
 
     networkIdToEcid (chainId) {
