@@ -54,11 +54,14 @@ interface Exchange {
     privatePostWalletTransfer (params?: {}): Promise<implicitReturnType>;
     privatePostCreateSubaccount (params?: {}): Promise<implicitReturnType>;
     privatePostAccountTransfer (params?: {}): Promise<implicitReturnType>;
+<<<<<<< HEAD
     privatePostEarnAllocate (params?: {}): Promise<implicitReturnType>;
     privatePostEarnDeallocate (params?: {}): Promise<implicitReturnType>;
     privatePostEarnAllocateStatus (params?: {}): Promise<implicitReturnType>;
     privatePostEarnDeallocateStatus (params?: {}): Promise<implicitReturnType>;
     privatePostEarnStrategies (params?: {}): Promise<implicitReturnType>;
+=======
+>>>>>>> 3f29c64a95 (store-1406 - depositable and withdrawable networks)
     privatePostEarnAllocations (params?: {}): Promise<implicitReturnType>;
 }
 abstract class Exchange extends _Exchange {}

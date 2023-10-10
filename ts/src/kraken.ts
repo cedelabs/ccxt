@@ -564,8 +564,8 @@ export default class kraken extends Exchange {
         //     {
         //         "error": [],
         //         "result": {
-        //             "ADA": { "aclass": "currency", "altname": "ADA", "decimals": 8, "display_decimals": 6 },
-        //             "BCH": { "aclass": "currency", "altname": "BCH", "decimals": 10, "display_decimals": 5 },
+        //             "ADA": { "aclass": "currency", "altname": "ADA", "decimals": 8, "display_decimals": 6, "collateral_value": 1, "status": "enabled" },
+        //             "BCH": { "aclass": "currency", "altname": "BCH", "decimals": 10, "display_decimals": 5, "collateral_value": 1, "status": "deposit_only" },
         //             ...
         //         },
         //     }
@@ -582,16 +582,17 @@ export default class kraken extends Exchange {
             // differentiated fees for each particular method
             const code = this.safeCurrencyCode (this.safeString (currency, 'altname'));
             const precision = this.parseNumber (this.parsePrecision (this.safeString (currency, 'decimals')));
-            // assumes all currencies are active except those listed above
-            const active = !this.inArray (code, this.options['inactiveCurrencies']);
+            const status = this.safeString (currency, 'status');
+            const isTokenDepositable = (status === 'enabled' || status === 'deposit_only');
+            const isWithdrawalEnabled = (status === 'enabled' || status === 'withdrawal_only');
             result[code] = {
                 'id': id,
                 'code': code,
                 'info': currency,
                 'name': code,
-                'active': active,
-                'deposit': undefined,
-                'withdraw': undefined,
+                'active': isTokenDepositable && isWithdrawalEnabled,
+                'deposit': isTokenDepositable,
+                'withdraw': isWithdrawalEnabled,
                 'fee': undefined,
                 'precision': precision,
                 'limits': {

@@ -1955,8 +1955,8 @@ export default class binance extends Exchange {
             const name = this.safeString (entry, 'name');
             const code = this.safeCurrencyCode (id);
             let minPrecision = undefined;
-            let isWithdrawEnabled = false;
-            let isDepositEnabled = false;
+            let isTokenWithdrawable = false;
+            let isTokenDepositable = false;
             const networkList = this.safeValue (entry, 'networkList', []);
             const fees = {};
             let fee = undefined;
@@ -1965,10 +1965,10 @@ export default class binance extends Exchange {
                 const network = this.safeString (networkItem, 'network');
                 // const name = this.safeString (networkItem, 'name');
                 const withdrawFee = this.safeNumber (networkItem, 'withdrawFee');
-                const depositEnable = this.safeValue (networkItem, 'depositEnable');
-                const withdrawEnable = this.safeValue (networkItem, 'withdrawEnable');
-                isDepositEnabled = depositEnable || isDepositEnabled;
-                isWithdrawEnabled = withdrawEnable || isWithdrawEnabled;
+                const isDepositEnabled = this.safeValue (networkItem, 'depositEnable');
+                const isWithdrawalEnabled = this.safeValue (networkItem, 'withdrawEnable');
+                isTokenDepositable = isDepositEnabled || isTokenDepositable;
+                isTokenWithdrawable = isWithdrawalEnabled || isTokenWithdrawable;
                 fees[network] = withdrawFee;
                 const isDefault = this.safeValue (networkItem, 'isDefault');
                 if (isDefault || (fee === undefined)) {
@@ -1982,7 +1982,7 @@ export default class binance extends Exchange {
                 }
             }
             const trading = this.safeValue (entry, 'trading');
-            const active = (isWithdrawEnabled && isDepositEnabled && trading);
+            const active = (isTokenWithdrawable && isTokenDepositable && trading);
             let maxDecimalPlaces = undefined;
             if (minPrecision !== undefined) {
                 maxDecimalPlaces = parseInt (this.numberToString (this.precisionFromString (minPrecision)));
@@ -1994,8 +1994,8 @@ export default class binance extends Exchange {
                 'precision': maxDecimalPlaces,
                 'info': entry,
                 'active': active,
-                'deposit': isDepositEnabled,
-                'withdraw': isWithdrawEnabled,
+                'deposit': isTokenDepositable,
+                'withdraw': isTokenWithdrawable,
                 'networks': networkList,
                 'fee': fee,
                 'fees': fees,
