@@ -1342,10 +1342,6 @@ export default class binance extends Exchange {
                     'explorer.zcha.in': 'ZEC',
                     'explorer.zensystem.io': 'ZEN',
                 },
-                'impliedNetworks': {
-                    'ETH': { 'ERC20': 'ETH' },
-                    'TRX': { 'TRC20': 'TRX' },
-                },
                 'legalMoney': {
                     'MXN': true,
                     'UGX': true,
@@ -6201,28 +6197,6 @@ export default class binance extends Exchange {
         //     }
         //
         const address = this.safeString (response, 'address');
-        const url = this.safeString (response, 'url');
-        let impliedNetwork = undefined;
-        if (url !== undefined) {
-            const reverseNetworks = this.safeValue (this.options, 'reverseNetworks', {});
-            const parts = url.split ('/');
-            let topLevel = this.safeString (parts, 2);
-            if ((topLevel === 'blockchair.com') || (topLevel === 'viewblock.io')) {
-                const subLevel = this.safeString (parts, 3);
-                if (subLevel !== undefined) {
-                    topLevel = topLevel + '/' + subLevel;
-                }
-            }
-            impliedNetwork = this.safeString (reverseNetworks, topLevel);
-            const impliedNetworks = this.safeValue (this.options, 'impliedNetworks', {
-                'ETH': { 'ERC20': 'ETH' },
-                'TRX': { 'TRC20': 'TRX' },
-            });
-            if (code in impliedNetworks) {
-                const conversion = this.safeValue (impliedNetworks, code, {});
-                impliedNetwork = this.safeString (conversion, impliedNetwork, impliedNetwork);
-            }
-        }
         let tag = this.safeString (response, 'tag', '');
         if (tag.length === 0) {
             tag = undefined;
@@ -6232,7 +6206,6 @@ export default class binance extends Exchange {
             'currency': code,
             'address': address,
             'tag': tag,
-            'network': impliedNetwork,
             'info': response,
         };
     }
