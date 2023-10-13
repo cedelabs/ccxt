@@ -1518,7 +1518,7 @@ export default class kucoin extends Exchange {
             'currency': code,
             'address': address,
             'tag': this.safeString (depositAddress, 'memo'),
-            'network': this.networkIdToCode (this.safeString (depositAddress, 'chain')),
+            // it's hard to retrieve the network here, the api returns the chain name, not the id
         };
     }
 
