@@ -345,7 +345,7 @@ export default class coinbase extends Exchange {
             return await this.fetchPaginatedCallCursor ('fetchAccounts', undefined, undefined, undefined, params, 'next_starting_after', 'starting_after', undefined, 100);
         }
         const request = {
-            'limit': 100,
+            'limit': 250,
         };
         const response = await this.v2PrivateGetAccounts (this.extend (request, params));
         //
