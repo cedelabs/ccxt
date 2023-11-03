@@ -914,11 +914,6 @@ export default class kucoin extends Exchange {
             const rawPrecision = this.safeString (entry, 'precision');
             const precision = this.parseNumber (this.parsePrecision (rawPrecision));
             const chainsLength = chains.length;
-            if (!chainsLength) {
-                // https://t.me/KuCoin_API/173118
-                isWithdrawEnabled = false;
-                isDepositEnabled = false;
-            }
             for (let j = 0; j < chainsLength; j++) {
                 const chain = chains[j];
                 const chainId = this.safeString (chain, 'chainId');
