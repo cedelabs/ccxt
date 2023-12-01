@@ -359,6 +359,7 @@ interface Exchange {
     sapiDeleteAlgoFuturesOrder (params?: {}): Promise<implicitReturnType>;
     sapiDeleteSubAccountSubAccountApiIpRestrictionIpList (params?: {}): Promise<implicitReturnType>;
     sapiV2GetSubAccountFuturesAccount (params?: {}): Promise<implicitReturnType>;
+    sapiV2GetSubAccountFuturesAccountSummary (params?: {}): Promise<implicitReturnType>;
     sapiV2GetSubAccountFuturesPositionRisk (params?: {}): Promise<implicitReturnType>;
     sapiV2PostSubAccountSubAccountApiIpRestriction (params?: {}): Promise<implicitReturnType>;
     sapiV3GetSubAccountAssets (params?: {}): Promise<implicitReturnType>;
@@ -635,7 +636,7 @@ interface Exchange {
     papiGetCmIncome (params?: {}): Promise<implicitReturnType>;
     papiGetUmAccount (params?: {}): Promise<implicitReturnType>;
     papiGetCmAccount (params?: {}): Promise<implicitReturnType>;
-    papiGetPortfolioRepayFuturesSwitch (params?: {}): Promise<implicitReturnType>;
+    papiGetRepayFuturesSwitch (params?: {}): Promise<implicitReturnType>;
     papiGetUmAdlQuantile (params?: {}): Promise<implicitReturnType>;
     papiGetCmAdlQuantile (params?: {}): Promise<implicitReturnType>;
     papiPostUmOrder (params?: {}): Promise<implicitReturnType>;
@@ -652,8 +653,8 @@ interface Exchange {
     papiPostCmPositionSideDual (params?: {}): Promise<implicitReturnType>;
     papiPostAutoCollection (params?: {}): Promise<implicitReturnType>;
     papiPostBnbTransfer (params?: {}): Promise<implicitReturnType>;
-    papiPostPortfolioRepayFuturesSwitch (params?: {}): Promise<implicitReturnType>;
-    papiPostPortfolioRepayFuturesNegativeBalance (params?: {}): Promise<implicitReturnType>;
+    papiPostRepayFuturesSwitch (params?: {}): Promise<implicitReturnType>;
+    papiPostRepayFuturesNegativeBalance (params?: {}): Promise<implicitReturnType>;
     papiPostListenKey (params?: {}): Promise<implicitReturnType>;
     papiPostAssetCollection (params?: {}): Promise<implicitReturnType>;
     papiPutListenKey (params?: {}): Promise<implicitReturnType>;
