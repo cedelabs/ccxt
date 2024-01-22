@@ -7116,7 +7116,7 @@ export default class bitget extends Exchange {
         if (nonZeroErrorCode) {
             this.throwExactlyMatchedException (this.exceptions['exact'], errorCode, userMessage);
         }
-        if (nonZeroErrorCode || nonEmptyMessage) {
+        if (nonZeroErrorCode && nonEmptyMessage) {
             throw new ExchangeError (userMessage); // unknown message
         }
         return undefined;
