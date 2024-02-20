@@ -1270,55 +1270,52 @@ export default class kraken extends Exchange {
         return this.parseTrades (trades, market, since, limit);
     }
 
-    safeBalance (balance: object): Balances {
-        const balances = this.omit (balance, [ 'info', 'timestamp', 'datetime', 'free', 'used', 'total' ]);
-        const codes = Object.keys (balances);
-        balance['free'] = {};
-        balance['used'] = {};
-        balance['total'] = {};
-        const debtBalance = {};
-        for (let i = 0; i < codes.length; i++) {
-            const code = codes[i];
-            const total = this.safeString (balance[code], 'balance');
-            const credit = balance[code].credit ? this.safeString (balance[code], 'credit') : 0;
-            const credit_used = balance[code].credit_used ? this.safeString (balance[code], 'credit_used') : 0;
-            const hold_trade = balance[code].hold_trade ? this.safeString (balance[code], 'hold_trade') : 0;
-            const free = this.parseNumber (total) + this.parseNumber (credit) - this.parseNumber (credit_used) - this.parseNumber (hold_trade);
-            const used = this.parseNumber (hold_trade) + this.parseNumber (credit_used);
-            const debt = this.safeString (balance[code], 'debt');
-            balance[code]['free'] = this.parseNumber (free);
-            balance[code]['used'] = this.parseNumber (used);
-            balance[code]['total'] = this.parseNumber (total);
-            balance['free'][code] = balance[code]['free'];
-            balance['used'][code] = balance[code]['used'];
-            balance['total'][code] = balance[code]['total'];
-            if (debt !== undefined) {
-                balance[code]['debt'] = this.parseNumber (debt);
-                debtBalance[code] = balance[code]['debt'];
-            }
-        }
-        const debtBalanceArray = Object.keys (debtBalance);
-        const length = debtBalanceArray.length;
-        if (length) {
-            balance['debt'] = debtBalance;
-        }
-        return balance as any;
-    }
-
-    parseBalance (response) {
-        const balances = this.safeValue (response, 'result', {});
+    parseBalanceCustom (response, type) {
         const result = {
             'info': response,
             'timestamp': undefined,
             'datetime': undefined,
         };
-        const currencyIds = Object.keys (balances);
-        for (let i = 0; i < currencyIds.length; i++) {
-            const currencyId = currencyIds[i];
-            const code = this.safeCurrencyCode (currencyId);
-            const account = this.account ();
-            account['total'] = this.safeString (balances, currencyId);
-            result[code] = balances[currencyId];
+        const balances = this.safeValue (response, 'result', {});
+        if (type === 'earn') {
+            const items = this.safeValue (balances, 'items', []);
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const currencyCode = this.safeValue (item, 'native_asset');
+                const amountAllocated = this.safeValue (item, 'amount_allocated');
+                const totalRewarded = this.safeValue (item, 'total_rewarded');
+                const totalAmountAllocated = this.safeValue (amountAllocated, 'total');
+                const totalAllocatedAmount = this.safeNumber (totalAmountAllocated, 'native');
+                const totalRewardedAmount = this.safeNumber (totalRewarded, 'native');
+                const totalAmount = totalAllocatedAmount + totalRewardedAmount;
+                const code = this.safeCurrencyCode (currencyCode);
+                result[code] = {
+                    'free': 0,
+                    'used': totalAmount,
+                    'total': totalAmount,
+                };
+            }
+        } else {
+            const currencyIds = Object.keys (balances);
+            for (let i = 0; i < currencyIds.length; i++) {
+                const currencyId = currencyIds[i];
+                const code = this.safeCurrencyCode (currencyId);
+                const balance = balances[currencyId];
+                const totalBalance = this.safeNumber (balance, 'balance', 0);
+                const credit = this.safeNumber (balance, 'credit', 0);
+                const creditUsed = this.safeNumber (balance, 'credit_used', 0);
+                const holdTrade = this.safeNumber (balance, 'hold_trade', 0);
+                const debt = this.safeNumber (balance, 'debt', 0);
+                const free = totalBalance + credit - creditUsed - holdTrade;
+                const used = holdTrade + creditUsed;
+                const total = free - used;
+                result[code] = {
+                    'free': free,
+                    'used': used,
+                    'total': total,
+                    'debt': debt,
+                };
+            }
         }
         return this.safeBalance (result);
     }
@@ -1329,27 +1326,52 @@ export default class kraken extends Exchange {
          * @name kraken#fetchBalance
          * @description query for balance and get the amount of funds available for trading or funds locked in orders
          * @see https://docs.kraken.com/rest/#tag/Account-Data/operation/getExtendedBalance
+         * @see https://docs.kraken.com/rest/#tag/Earn/operation/listAllocations
          * @param {object} [params] extra parameters specific to the exchange API endpoint
+         * @param {string} [params.type] 'earn', or 'spot'
          * @returns {object} a [balance structure]{@link https://docs.ccxt.com/#/?id=balance-structure}
          */
         await this.loadMarkets ();
-        const response = await this.privatePostBalanceEx (params);
-        //
-        //     {
-        //         "error": [],
-        //         "result": {
-        //             "ZUSD": {
-        //                 "balance": 25435.21,
-        //                 "hold_trade": 8249.76
-        //             },
-        //             "XXBT": {
-        //                 "balance": 1.2435,
-        //                 "hold_trade": 0.8423
-        //             }
-        //         }
-        //     }
-        //
-        return this.parseBalance (response);
+        const type = this.safeString (params, 'type', 'spot');
+        let response;
+        if (type === 'earn') {
+            // {
+            //     error: [],
+            //     result: {
+            //       converted_asset: "USD",
+            //       total_allocated: "49.2398",
+            //       total_rewarded: "0.0675",
+            //       next_cursor: "2",
+            //       items: [
+            //         {
+            //           strategy_id: "ESDQCOL-WTZEU-NU55QF",
+            //           native_asset: "ETH",
+            //           amount_allocated: {},
+            //           total_rewarded: {},
+            //         },
+            //       ],
+            //     },
+            // };
+            response = await this.privatePostEarnAllocations (params);
+        } else {
+            //
+            //     {
+            //         "error": [],
+            //         "result": {
+            //             "ZUSD": {
+            //                 "balance": 25435.21,
+            //                 "hold_trade": 8249.76
+            //             },
+            //             "XXBT": {
+            //                 "balance": 1.2435,
+            //                 "hold_trade": 0.8423
+            //             }
+            //         }
+            //     }
+            //
+            response = await this.privatePostBalanceEx (params);
+        }
+        return this.parseBalanceCustom (response, type);
     }
 
     async createOrder (symbol: string, type: OrderType, side: OrderSide, amount: number, price: number = undefined, params = {}) {
