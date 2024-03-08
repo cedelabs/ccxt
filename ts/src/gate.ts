@@ -615,12 +615,14 @@ export default class gate extends Exchange {
                     'GATEIO': 'GTEVM',
                     'KSM': 'KSMSM',
                     'DOT': 'DOTSM',
+                    'MANTA': 'MANTAETH',
                 },
                 'networksById': {
                     'CHZ2': 'CHZ',
                     'DOTSM': 'DOT',
                     'GTEVM': 'GATEIO',
                     'KSMSM': 'KSM',
+                    'MANTAETH': 'MANTA',
                 },
                 'timeInForce': {
                     'GTC': 'gtc',
