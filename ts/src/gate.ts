@@ -4514,10 +4514,12 @@ export default class gate extends Exchange {
             const averageString = this.safeString (order, 'avg_deal_price');
             average = this.parseNumber (averageString);
             if ((type === 'market') && (side === 'buy')) {
+                // filled_total represents the real traded quote token amount
+                const filledTotal = this.safeString2 (order, 'filled_total', 'amount');
                 remaining = Precise.stringDiv (remainingString, averageString);
                 price = undefined; // arrives as 0
-                cost = amount;
-                amount = Precise.stringDiv (amount, averageString);
+                cost = filledTotal;
+                amount = Precise.stringDiv (filledTotal, averageString);
             }
         }
         return this.safeOrder ({
