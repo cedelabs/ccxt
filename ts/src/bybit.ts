@@ -1275,6 +1275,40 @@ export default class bybit extends Exchange {
         return [ subType, params ];
     }
 
+    async fetchStatus (params = {}) {
+        /**
+         * @method
+         * @name bybit#fetchStatus
+         * @description the latest known information on the availability of the exchange API - bybit does not have such an endpoint, so we fetch the server time to see if the exchange is able to respond
+         * @see https://bybit-exchange.github.io/docs/v5/market/time
+         * @param {object} [params] extra parameters specific to the exchange API endpoint
+         * @returns {object} a [status structure]{@link https://docs.ccxt.com/#/?id=exchange-status-structure}
+         */
+        const response = await this.publicGetV5MarketTime (params);
+        //
+        //    {
+        //         "retCode": "0",
+        //         "retMsg": "OK",
+        //         "result": {
+        //             "timeSecond": "1666879482",
+        //             "timeNano": "1666879482792685914"
+        //         },
+        //         "retExtInfo": {},
+        //         "time": "1666879482792"
+        //     }
+        //
+        const code = this.safeString (response, 'retCode');
+        const status = (code === '0') ? 'ok' : 'maintenance';
+        const serverTime = this.safeInteger (response, 'time');
+        return {
+            'status': status,
+            'updated': serverTime,
+            'eta': undefined,
+            'url': undefined,
+            'info': response,
+        };
+    }
+
     async fetchTime (params = {}) {
         /**
          * @method

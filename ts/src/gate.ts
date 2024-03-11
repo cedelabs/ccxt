@@ -961,6 +961,30 @@ export default class gate extends Exchange {
         return this.seconds () - timeDifferenceS;
     }
 
+    async fetchStatus (params = {}) {
+        /**
+         * @method
+         * @name gate#fetchStatus
+         * @description the latest known information on the availability of the exchange API - gate does not have such an endpoint, so we fetch the server time to see if the exchange is able to respond
+         * @see https://www.gate.io/docs/developers/apiv4/#get-server-current-time
+         * @param {object} [params] extra parameters specific to the exchange API endpoint
+         * @returns {object} a [status structure]{@link https://docs.ccxt.com/#/?id=exchange-status-structure}
+         */
+        const response = await this.publicSpotGetTime (params);
+        // {
+        //     "server_time": 1597026383085
+        // }
+        const serverTime = this.safeInteger (response, 'server_time');
+        const status = serverTime !== undefined ? 'ok' : 'maintenance';
+        return {
+            'status': status,
+            'updated': serverTime,
+            'eta': undefined,
+            'url': undefined,
+            'info': response,
+        };
+    }
+
     async fetchTime (params?: {}): Promise<number> {
         const response = await this.publicSpotGetTime (params);
         return this.safeInteger (response, 'server_time');

@@ -472,6 +472,36 @@ export default class kraken extends Exchange {
         return result;
     }
 
+    async fetchStatus (params = {}) {
+        /**
+         * @method
+         * @name kraken#fetchStatus
+         * @description the latest known information on the availability of the exchange API
+         * @see https://docs.kraken.com/rest/#tag/Spot-Market-Data/operation/getSystemStatus
+         * @param {object} [params] extra parameters specific to the exchange API endpoint
+         * @returns {object} a [status structure]{@link https://docs.ccxt.com/#/?id=exchange-status-structure}
+         */
+        const response = await this.publicGetSystemStatus (params);
+        // {
+        //   "error": [],
+        //   "result": {
+        //     "status": "online",
+        //     "timestamp": "2023-07-06T18:52:00Z"
+        //   }
+        // }
+        const result = this.safeValue (response, 'result', {});
+        const status = this.safeString (result, 'status');
+        const parsedStatus = this.safeString ({ 'online': 'ok', 'maintenance': 'maintenance', 'cancel_only': 'maintenance', 'post_only': 'maintenance' }, status, 'maintenance');
+        const timestamp = this.parse8601 (this.safeString (result, 'timestamp'));
+        return {
+            'status': parsedStatus,
+            'updated': timestamp,
+            'eta': undefined,
+            'url': undefined,
+            'info': response,
+        };
+    }
+
     async fetchWithdrawalMethods () {
         let withdrawalNetworks = this.safeValue (this.options, 'withdrawalNetworks', []);
         if (withdrawalNetworks.length === 0 && this.checkRequiredCredentials (false)) {

@@ -188,6 +188,11 @@ export default class coinbase extends Exchange {
                     },
                 },
                 'v3': {
+                    'public': {
+                        'get': [
+                            'brokerage/time',
+                        ],
+                    },
                     'private': {
                         'get': [
                             'brokerage/accounts',
@@ -205,7 +210,6 @@ export default class coinbase extends Exchange {
                             'brokerage/product_book',
                             'brokerage/best_bid_ask',
                             'brokerage/convert/trade/{trade_id}',
-                            'brokerage/time',
                             'brokerage/cfm/balance_summary',
                             'brokerage/cfm/positions',
                             'brokerage/cfm/positions/{product_id}',
@@ -335,6 +339,33 @@ export default class coinbase extends Exchange {
                 'user_native_currency': 'USD', // needed to get fees for v3
             },
         });
+    }
+
+    async fetchStatus (params = {}) {
+        /**
+         * @method
+         * @name coinbase#fetchStatus
+         * @description the latest known information on the availability of the exchange API - coinbase does not have such an endpoint, so we fetch the server time to see if the exchange is able to respond
+         * @see https://docs.cloud.coinbase.com/advanced-trade-api/reference/retailbrokerageapi_getservertime
+         * @param {object} [params] extra parameters specific to the exchange API endpoint
+         * @returns {object} a [status structure]{@link https://docs.ccxt.com/#/?id=exchange-status-structure}
+         */
+        const response = await this.v3PublicGetBrokerageTime (params);
+        // {
+        //     "iso": "2023-11-28T00:00:22Z",
+        //     "epochSeconds": "1701129622",
+        //     "epochMillis": "1701129622115"
+        //  }
+        const iso = this.safeString (response, 'iso');
+        const serverTime = this.parse8601 (iso);
+        const status = serverTime !== undefined ? 'ok' : 'maintenance';
+        return {
+            'status': status,
+            'updated': serverTime,
+            'eta': undefined,
+            'url': undefined,
+            'info': response,
+        };
     }
 
     async fetchTime (params = {}) {
