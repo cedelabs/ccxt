@@ -5028,7 +5028,7 @@ export default class Exchange {
         return this.decimalToPrecision (fee, ROUND, market['precision']['price'], this.precisionMode, this.paddingMode);
     }
 
-    currencyToPrecision (code: string, fee, networkCode = undefined) {
+    currencyToPrecision (code: string, fee, networkCode = undefined, disableThreshold = false) {
         const currency = this.currencies[code];
         let precision = this.safeValue (currency, 'precision');
         if (networkCode !== undefined) {
@@ -5039,7 +5039,7 @@ export default class Exchange {
         if (precision === undefined) {
             return this.forceString (fee);
         } else {
-            const result = this.decimalToPrecision (fee, TRUNCATE, precision, this.precisionMode, this.paddingMode);
+            const result = this.decimalToPrecision (fee, TRUNCATE, precision, this.precisionMode, this.paddingMode, disableThreshold);
             return result;
         }
     }
