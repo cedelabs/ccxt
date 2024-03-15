@@ -864,7 +864,15 @@ export default class Exchange {
             maxCapacity: 1000,
             refillRate: (this.rateLimit > 0) ? 1 / this.rateLimit : Number.MAX_VALUE,
         }, this.tokenBucket);
-        this.throttler = new Throttler (this.tokenBucket);
+        this.throttler = this.throttlerFactory ({
+            'tokenBucket': this.tokenBucket,
+            'id': this.id,
+        });
+    }
+
+    throttlerFactory (opts: any) {
+        const tokenBucket = this.safeValue (opts, 'tokenBucket');
+        return new Throttler (tokenBucket);
     }
 
     throttle (cost = undefined, path = undefined, customExpireInterval = undefined, customPriority = undefined) {

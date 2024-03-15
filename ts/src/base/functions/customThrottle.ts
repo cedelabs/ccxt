@@ -138,7 +138,7 @@ class Throttler {
     }
 }
 
-export {
+export { 
     Throttler,
 };
 
