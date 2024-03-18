@@ -2637,10 +2637,15 @@ export default class Exchange {
     safeBalance (balance: object): Balances {
         const balances = this.omit (balance, [ 'info', 'timestamp', 'datetime', 'free', 'used', 'total' ]);
         const codes = Object.keys (balances);
-        balance['free'] = {};
-        balance['used'] = {};
-        balance['total'] = {};
-        const debtBalance = {};
+        const filteredBalances = {
+            'info': balance?.['info'],
+            'timestamp': balance?.['timestamp'],
+            'datetime': balance?.['datetime'],
+            'free': {},
+            'used': {},
+            'total': {},
+            'dept': {},
+        };
         for (let i = 0; i < codes.length; i++) {
             const code = codes[i];
             let total = this.safeString (balance[code], 'total');
@@ -2656,23 +2661,32 @@ export default class Exchange {
             if ((used === undefined) && (total !== undefined) && (free !== undefined)) {
                 used = Precise.stringSub (total, free);
             }
-            balance[code]['free'] = this.parseNumber (free);
-            balance[code]['used'] = this.parseNumber (used);
-            balance[code]['total'] = this.parseNumber (total);
-            balance['free'][code] = balance[code]['free'];
-            balance['used'][code] = balance[code]['used'];
-            balance['total'][code] = balance[code]['total'];
+            const parsedFree = this.parseNumber (free);
+            const parsedUsed = this.parseNumber (used);
+            const parsedTotal = this.parseNumber (total);
+            if (parsedTotal === undefined || parsedFree === undefined || parsedUsed === undefined || parsedTotal === 0) {
+                continue;
+            }
+            filteredBalances[code] = {
+                'free': parsedFree,
+                'used': parsedUsed,
+                'total': parsedTotal,
+            };
+            filteredBalances['free'][code] = parsedFree;
+            filteredBalances['used'][code] = parsedUsed;
+            filteredBalances['total'][code] = parsedTotal;
             if (debt !== undefined) {
-                balance[code]['debt'] = this.parseNumber (debt);
-                debtBalance[code] = balance[code]['debt'];
+                const parsedDebt = this.parseNumber (debt);
+                filteredBalances[code]['debt'] = parsedDebt;
+                filteredBalances['dept'][code] = parsedDebt;
             }
         }
-        const debtBalanceArray = Object.keys (debtBalance);
+        const debtBalanceArray = Object.keys (filteredBalances['dept']);
         const length = debtBalanceArray.length;
-        if (length) {
-            balance['debt'] = debtBalance;
+        if (length === 0) {
+            delete filteredBalances['dept'];
         }
-        return balance as any;
+        return filteredBalances as any;
     }
 
     safeOrder (order: object, market: Market = undefined): Order {
