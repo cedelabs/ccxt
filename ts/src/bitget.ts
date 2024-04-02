@@ -1435,6 +1435,37 @@ export default class bitget extends Exchange {
         return convertedSymbol;
     }
 
+    async fetchStatus (params = {}) {
+        /**
+         * @method
+         * @name bitget#fetchStatus
+         * @description the latest known information on the availability of the exchange API - bitget does not have such an endpoint, so we fetch the server time to see if the exchange is able to respond
+         * @see https://www.bitget.com/api-doc/common/public/Get-Server-Time
+         * @param {object} [params] extra parameters specific to the exchange API endpoint
+         * @returns {object} a [status structure]{@link https://docs.ccxt.com/#/?id=exchange-status-structure}
+         */
+        const response = await this.publicCommonGetV2PublicTime (params);
+        // {
+        //     "code": "00000",
+        //     "msg": "success",
+        //     "requestTime": 1688008631614,
+        //     "data": {
+        //         "serverTime": "1688008631614"
+        //     }
+        // }
+        const data = this.safeValue (response, 'data', {});
+        const code = this.safeString (response, 'code');
+        const status = (code === '00000') ? 'ok' : 'maintenance';
+        const serverTime = this.safeInteger (data, 'serverTime');
+        return {
+            'status': status,
+            'updated': serverTime,
+            'eta': undefined,
+            'url': undefined,
+            'info': response,
+        };
+    }
+
     handleProductTypeAndParams (market = undefined, params = {}) {
         let subType = undefined;
         [ subType, params ] = this.handleSubTypeAndParams ('handleProductTypeAndParams', undefined, params);

@@ -449,6 +449,32 @@ export default class bitstamp extends Exchange {
         });
     }
 
+    async fetchStatus (params = {}) {
+        /**
+         * @method
+         * @name bitstamp#fetchStatus
+         * @description the latest known information on the availability of the exchange API - bitstamp does not have such an endpoint, so we fetch the public EUR/USD conversion rate to see if the exchange is able to respond
+         * @see https://www.bitstamp.net/api/#tag/Market-info/operation/GetEURUSDConversionRate
+         * @param {object} [params] extra parameters specific to the exchange API endpoint
+         * @returns {object} a [status structure]{@link https://docs.ccxt.com/#/?id=exchange-status-structure}
+         */
+        const response = await this.publicGetEurUsd (params);
+        // {
+        //     "buy": "16.52234567",
+        //     "sell": "0.06577932"
+        // }
+        const buy = this.safeNumber (response, 'buy');
+        const sell = this.safeNumber (response, 'sell');
+        const status = buy !== undefined && sell !== undefined ? 'ok' : 'maintenance';
+        return {
+            'status': status,
+            'updated': undefined,
+            'eta': undefined,
+            'url': undefined,
+            'info': response,
+        };
+    }
+
     async fetchMarkets (params = {}) {
         /**
          * @method
