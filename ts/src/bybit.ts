@@ -6638,8 +6638,14 @@ export default class bybit extends Exchange {
         await this.loadMarkets ();
         const transferId = this.safeString (params, 'transferId', this.uuid ());
         const accountTypes = this.safeValue (this.options, 'accountsByType', {});
-        const fromId = this.safeString (accountTypes, fromAccount, fromAccount);
-        const toId = this.safeString (accountTypes, toAccount, toAccount);
+        let fromId = this.safeString (accountTypes, fromAccount, fromAccount);
+        let toId = this.safeString (accountTypes, toAccount, toAccount);
+        const [ enableUnifiedMargin, enableUnifiedAccount ] = await this.isUnifiedEnabled ();
+        const isUnifiedAccount = (enableUnifiedMargin || enableUnifiedAccount);
+        if (isUnifiedAccount) {
+            if (fromId === 'SPOT') fromId = 'UNIFIED';
+            if (toId === 'SPOT') toId = 'UNIFIED';
+        }
         const currency = this.currency (code);
         const amountToPrecision = this.currencyToPrecision (code, amount);
         const request = {
