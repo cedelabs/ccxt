@@ -881,6 +881,8 @@ export default class kucoin extends Exchange {
         //                    "chain":"eth",
         //                    "withdrawalMinSize":"2999",
         //                    "withdrawalMinFee":"2999",
+        //                    "withdrawFeeRate": "0.001",
+        //                    "withdrawMaxFee": "0.0005",
         //                    "isWithdrawEnabled":false,
         //                    "isDepositEnabled":false,
         //                    "confirms":12,
@@ -961,6 +963,7 @@ export default class kucoin extends Exchange {
                 isTokenDepositable = isDepositEnabled || isTokenDepositable;
                 isTokenWithdrawable = isWithdrawalEnabled || isTokenWithdrawable;
                 const chainExtraData = this.safeValue (extraChainsData, chainId, {});
+                const withdrawalMinSize = this.safeNumber (chain, 'withdrawalMinSize', 0);
                 networks[networkCode] = {
                     'info': chain,
                     'id': chainId,
@@ -973,7 +976,7 @@ export default class kucoin extends Exchange {
                     'precision': this.parseNumber (this.parsePrecision (this.safeString (chainExtraData, 'walletPrecision'))),
                     'limits': {
                         'withdraw': {
-                            'min': this.safeNumber (chain, 'withdrawalMinSize'),
+                            'min': withdrawalMinSize,
                             'max': undefined,
                         },
                         'deposit': {
