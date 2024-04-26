@@ -893,9 +893,9 @@ export default class binance extends Exchange {
                         'ping': 0.2, // Weight(IP): 1 => cost = 0.2 * 1 = 0.2
                         'time': 0.2,
                         'depth': { 'cost': 1, 'byLimit': [ [ 100, 1 ], [ 500, 5 ], [ 1000, 10 ], [ 5000, 50 ] ] },
-                        'trades': 2, // Weight(IP): 10 => cost = 0.2 * 10 = 2
+                        'trades': 5, // Weight(IP): 25 => cost = 0.2 * 25 = 5
                         'aggTrades': 0.4,
-                        'historicalTrades': 2, // Weight(IP): 10 => cost = 0.2 * 10 = 2
+                        'historicalTrades': 5, // Weight(IP): 25 => cost = 0.2 * 25 = 5
                         'klines': 0.4,
                         'uiKlines': 0.4,
                         'ticker/24hr': { 'cost': 0.4, 'noSymbol': 16 },
@@ -3075,11 +3075,14 @@ export default class binance extends Exchange {
         }
         let active = (status === 'TRADING');
         if (spot) {
-            const permissions = this.safeList (market, 'permissions', []);
-            for (let j = 0; j < permissions.length; j++) {
-                if (permissions[j] === 'TRD_GRP_003') {
-                    active = false;
-                    break;
+            const permissionSets = this.safeList (market, 'permissionSets', []);
+            for (let i = 0; i < permissionSets.length; i++) {
+                const permissionsFromSets = this.safeList (permissionSets, i, []);
+                for (let j = 0; j < permissionsFromSets.length; j++) {
+                    if (permissionsFromSets[j] === 'TRD_GRP_003') {
+                        active = false;
+                        break;
+                    }
                 }
             }
         }
